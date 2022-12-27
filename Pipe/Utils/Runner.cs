@@ -7,7 +7,7 @@ namespace Pipe.Utils;
 public class Runner
 {
     private BuildConfigModel config { get; set; } = new BuildConfigModel();
-    private Pip pip { get; set; } = new Pip();
+    private Pip pip { get; } = new Pip();
 
     public void SetConfig(BuildConfigModel configModel)
     {
@@ -82,6 +82,14 @@ public class Runner
             }
         }
 
+        if (config.NoFollowTo.Count != 0)
+        {
+            foreach (string s in config.NoFollowTo)
+            {
+                command.Append($" --nofollow-import-to={s}");
+            }
+        }
+
         if (config.OneFile)
         {
             command.Append(" --onefile");
@@ -105,6 +113,32 @@ public class Runner
         if (config.LowMemoryMode)
         {
             command.Append(" --low-memory");
+            Terminal.Warn("Using low memory compilation mode.");
+        }
+
+        if (config.ItsModules)
+        {
+            command.Append(" --module");
+        }
+
+        if (config.Jobs != 0)
+        {
+            command.Append($" --jobs={config.Jobs.ToString()}");
+        }
+
+        if (config.LTO != 0)
+        {
+            switch (config.LTO)
+            {
+                case 1:
+                    command.Append(" --lto=yes");
+                    Terminal.Warn("LTO enabled.");
+                    break;
+                case 2:
+                    command.Append(" --lto=auto");
+                    Terminal.Warn("LTO set to auto.");
+                    break;
+            }
         }
 
         command.Append(" " + config.MainExecutableName);
@@ -117,6 +151,8 @@ public class Runner
         Terminal.Info("Pipe Build System");
         Terminal.Info($"Pipe version: {VersionInfo.Version}");
         Terminal.Info($"Project: {config.ProjectName}");
+        string type = config.ItsModules ? "app" : "module";
+        Terminal.Info($"Project type: {type}");
         if (config.Packages.Count != 0)
         {
             CheckPackages();
@@ -126,7 +162,12 @@ public class Runner
         {
             CheckDirectories();
         }
-        
+
+        if (!File.Exists(config.MainExecutableName))
+        {
+            Terminal.Error("Main file not found. Aborting compilation.");
+            Terminal.Exit(-4);
+        }
         Terminal.Done("All checks complete.");
         Terminal.Work("Making build arguments tree...");
         string command = GenerateCommand();

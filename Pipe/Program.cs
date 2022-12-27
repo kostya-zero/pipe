@@ -19,9 +19,11 @@ class Program
                 BuildActions buildActions = new BuildActions();
                 buildActions.Resolve(args);
                 break;
-            case "config":
+            case "pkg":
                 break;
             case "info":
+                break;
+            case "help":
                 break;
             default:
                 Terminal.Error("Unknown command.");

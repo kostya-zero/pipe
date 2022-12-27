@@ -18,7 +18,7 @@ public class Runner
     {
         Terminal.Work("Checking for packages...");
         int foundPackages = 0;
-        foreach (string package in config.IncludePackages)
+        foreach (string package in config.Packages)
         {
             if (pip.CheckPackageInstalled(package))
             {
@@ -31,9 +31,9 @@ public class Runner
             }
         }
 
-        if (foundPackages != config.IncludePackages.Count)
+        if (foundPackages != config.Packages.Count)
         {
-            Terminal.Error($"{(config.IncludePackages.Count - foundPackages).ToString()} packages not found!");
+            Terminal.Error($"{(config.Packages.Count - foundPackages).ToString()} packages not found!");
             Terminal.Exit(-4);
         }
         
@@ -66,19 +66,11 @@ public class Runner
     private string GenerateCommand()
     {
         StringBuilder command = new StringBuilder("-m nuitka");
-        if (config.IncludePackages.Count != 0)
+        if (config.Packages.Count != 0)
         {
-            foreach (string package in config.IncludePackages)
+            foreach (string package in config.Packages)
             {
                 command.Append($" --include-package={package}");
-            }
-        }
-        
-        if (config.IncludeModules.Count != 0)
-        {
-            foreach (string module in config.IncludeModules)
-            {
-                command.Append($" --include-module={module}");
             }
         }
         
@@ -125,7 +117,7 @@ public class Runner
         Terminal.Info("Pipe Build System");
         Terminal.Info($"Pipe version: {VersionInfo.Version}");
         Terminal.Info($"Project: {config.ProjectName}");
-        if (config.IncludePackages.Count != 0)
+        if (config.Packages.Count != 0)
         {
             CheckPackages();
         }
@@ -146,9 +138,10 @@ public class Runner
             Arguments = command,
             CreateNoWindow = false
         };
-        Terminal.Work("Running nutika...");
+        Terminal.Work("Running nuitka...");
         proc.Start();
         proc.WaitForExit();
-
+        Terminal.Info($"Nuitka finished with exit code -> {proc.ExitCode.ToString()}");
+        Terminal.Done("Build finished.");
     }
 }

@@ -1,7 +1,8 @@
 namespace Pipe.Utils;
 
-public class VersionInfo
+public static class VersionInfo
 {
-   public static string Version = "0.1";
-   public static string Codename = "Wise";
+   public const string Version = "1.0";
+   public const string Codename = "Wise";
+   public const string ReleaseCandidate = "1";
 }

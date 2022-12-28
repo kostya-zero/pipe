@@ -9,6 +9,9 @@ public class BuildConfigModel
     
     [JsonPropertyName("project_mainexecutable")]
     public string MainExecutableName { get; set; } = "main.py";
+    
+    [JsonPropertyName("project_version")]
+    public string ProjectVersion { get; set; } = "1.0.0";
 
     [JsonPropertyName("pipe_buildmodule")]
     public bool ItsModules { get; set; } = false;
@@ -27,9 +30,6 @@ public class BuildConfigModel
     
     [JsonPropertyName("pipe_usebytecode")]
     public bool UseBytecode { get; set; } = false;
-    
-    [JsonPropertyName("pipe_cleanafterbuild")]
-    public bool CleanAfterBuild { get; set; } = true; 
     
     [JsonPropertyName("options_onefile")]
     public bool OneFile { get; set; } = false;

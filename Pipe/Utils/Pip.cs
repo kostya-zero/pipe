@@ -20,12 +20,7 @@ public class Pip
         proc.Start();
         proc.WaitForExit();
 
-        if (proc.ExitCode == 1)
-        {
-            result = false;
-        }
-
-        if (proc.ExitCode != 1)
+        if (proc.ExitCode == 0)
         {
             result = true;
         }

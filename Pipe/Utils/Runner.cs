@@ -34,7 +34,7 @@ public class Runner
         if (foundPackages != config.Packages.Count)
         {
             Terminal.Error($"{(config.Packages.Count - foundPackages).ToString()} packages not found!");
-            Terminal.Exit(-4);
+            Terminal.Exit(4);
         }
         
     }
@@ -59,7 +59,7 @@ public class Runner
         if (foundDirs != config.IncludeDirectories.Count)
         {
             Terminal.Error($"{(config.IncludeDirectories.Count - foundDirs).ToString()} directories not found!");
-            Terminal.Exit(-4);
+            Terminal.Exit(4);
         }
     }
 
@@ -89,6 +89,8 @@ public class Runner
                 command.Append($" --nofollow-import-to={s}");
             }
         }
+
+        command.Append($" --product-version={config.ProjectVersion.Trim()}");
 
         if (config.OneFile)
         {
@@ -141,6 +143,21 @@ public class Runner
             }
         }
 
+        if (config.DisableConsole)
+        {
+            command.Append(" --disable-console");
+        }
+
+        if (!config.UseBytecode)
+        {
+            command.Append(" --disable-bytecode-cache"); 
+        }
+        
+        if (!config.UseCCache)
+        {
+            command.Append(" --disable-ccache"); 
+        }
+
         command.Append(" " + config.MainExecutableName);
 
         return command.ToString();
@@ -151,7 +168,7 @@ public class Runner
         Terminal.Info("Pipe Build System");
         Terminal.Info($"Pipe version: {VersionInfo.Version}");
         Terminal.Info($"Project: {config.ProjectName}");
-        string type = config.ItsModules ? "app" : "module";
+        string type = config.ItsModules ? "module" : "app";
         Terminal.Info($"Project type: {type}");
         if (config.Packages.Count != 0)
         {
@@ -165,8 +182,13 @@ public class Runner
 
         if (!File.Exists(config.MainExecutableName))
         {
-            Terminal.Error("Main file not found. Aborting compilation.");
-            Terminal.Exit(-4);
+            Terminal.Error($"Main file ({config.MainExecutableName}) not found. Aborting compilation...");
+            Terminal.Exit(4);
+        }
+
+        if (config.ProjectVersion.Trim() == "")
+        {
+            Terminal.Error("Version of project not specified.");
         }
         Terminal.Done("All checks complete.");
         Terminal.Work("Making build arguments tree...");

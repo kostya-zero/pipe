@@ -43,7 +43,7 @@ public class BuildActions
         if (Configs.CheckForConfig())
         {
             Terminal.Error("Config already exists!");
-            Terminal.Exit(-1);
+            Terminal.Exit(1);
         }
         Terminal.Work("Starting genconfig script.");
         string name = Terminal.Ask("Name of project.", "pipe_project");
@@ -65,7 +65,7 @@ public class BuildActions
         if (!Configs.CheckForConfig())
         {
             Terminal.Error("Config not found!");
-            Terminal.Exit(-1); 
+            Terminal.Exit(1); 
         }
         Runner runner = new Runner();
         runner.SetConfig(Configs.GetConfig());
@@ -77,7 +77,7 @@ public class BuildActions
         if (!Configs.CheckForConfig())
         {
             Terminal.Error("Config not found!");
-            Terminal.Exit(-1); 
+            Terminal.Exit(1); 
         }
 
         var config = Configs.GetConfig();

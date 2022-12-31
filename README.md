@@ -12,13 +12,12 @@ Optional:
 - `ccache` - required to allow Nuitka use ccache (`pipe_useccache`).
 
 ## Installation
-You can install Pipe for the x64 and ARM platforms. 
-Also, it has RTR(`Ready to run`) versions and they don't need a runtime.
+You can install Pipe for the x64 and ARM64 platforms.
 Let's install it step-by-step:
 - **1.** Go to releases section and select your preferred version.
-- **2.** Download a binary file that matches your architecture and prefer execute method(`rtr/runtime`) (`pipe-<system>-<version>-<executemethod>-<arch>.zip`, example: `pipe-linux-1.0-runtime-arm.zip`).
+- **2.** Download a binary file that matches your architecture and system (`pipe-<system>-<version>-<arch>.zip`, example: `pipe-linux-1.0-arm64.zip`).
 - **3.** Place it where you want.
-- **4.** If you have selected `runtime` binary, you need to install .NET runtime to run it. If you selected `rtr`, it will run without runtime.
+- **4.** Make sure that .NET Runtime are installed on your system.
 - **5.** Finish.
 
 ## Usage

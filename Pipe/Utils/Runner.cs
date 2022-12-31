@@ -163,7 +163,7 @@ public class Runner
         return command.ToString();
     }
 
-    public void RunBuild(bool verbose)
+    public void RunBuild()
     {
         Terminal.Info("Pipe Build System");
         Terminal.Info($"Pipe version: {VersionInfo.Version}");

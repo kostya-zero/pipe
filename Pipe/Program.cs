@@ -24,6 +24,7 @@ class Program
                 infoActions.Resolve(args);
                 break;
             case "help":
+                HelpMessages.HelpProgram();
                 break;
             default:
                 Terminal.Error("Unknown command.");

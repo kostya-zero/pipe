@@ -23,6 +23,9 @@ public class InfoActions
             case "req":
                 Req();
                 break;
+            case "help":
+                HelpMessages.InfoHelp();
+                break;
             default:
                 Terminal.Error("Unknown positional argument.");
                 Terminal.Exit(1);

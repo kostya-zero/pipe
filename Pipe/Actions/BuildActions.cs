@@ -17,16 +17,13 @@ public class BuildActions
         switch (args[1])
         {
             case "start":
-                Start(false);
+                Start();
                 break;
             case "genconfig":
                 GenConfig();
                 break;
             case "checkdepends":
                 CheckDepends();
-                break;
-            case "startverbose":
-                Start(true);
                 break;
             case "help":
                 HelpMessages.BuildHelp();
@@ -60,7 +57,7 @@ public class BuildActions
         Terminal.Done("Config generated.");
     }
 
-    private void Start(bool verbose)
+    private void Start()
     {
         if (!Configs.CheckForConfig())
         {
@@ -69,7 +66,7 @@ public class BuildActions
         }
         Runner runner = new Runner();
         runner.SetConfig(Configs.GetConfig());
-        runner.RunBuild(verbose);
+        runner.RunBuild();
     }
     
     private void CheckDepends()

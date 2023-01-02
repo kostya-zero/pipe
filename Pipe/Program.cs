@@ -16,8 +16,16 @@ class Program
         switch (args[0])
         {
             case "build":
-                BuildActions buildActions = new BuildActions();
-                buildActions.Resolve(args);
+                if (!Configs.CheckForConfig())
+                {
+                    Terminal.Error("Config not found!");
+                    Terminal.Exit(1); 
+                }
+                Runner runner = new Runner();
+                runner.SetConfig(Configs.GetConfig());
+                runner.RunBuild();
+                break;
+            case "proj":
                 break;
             case "info":
                 InfoActions infoActions = new InfoActions();

@@ -1,3 +1,5 @@
+using Console = System.Console;
+
 namespace Pipe.Utils;
 
 public class HelpMessages
@@ -15,23 +17,15 @@ public class HelpMessages
         Console.WriteLine("     build - Build project.");
         Console.WriteLine("     info  - Info about Pipe.");
         Console.WriteLine("     help  - Shows this message.");
-    }
-    public static void BuildHelp()
-    {
-        HeaderMessage();
-        Console.WriteLine("Build positional arguments:");
-        Console.WriteLine("     help         - Shows help message.");
-        Console.WriteLine("     start        - Start build of project.");
-        Console.WriteLine("     genconfig    - Generating config file.");
-        Console.WriteLine("     checkdepends - Checking depends in 'depends_packages'.");
-    }
-
-    public static void InfoHelp()
-    {
-        HeaderMessage();
+        Console.WriteLine("     proj  - Manage your project\n");
         Console.WriteLine("Info arguments:");
         Console.WriteLine("     env     - Shows info about environment.");
         Console.WriteLine("     version - Shows pipe version.");
-        Console.WriteLine("     req     - Matching requirements with current environment.");
+        Console.WriteLine("     req     - Matching requirements with current environment.\n");
+        Console.WriteLine("Proj arguments:");
+        Console.WriteLine("     init - Initialize a Pipe project.");
+        Console.WriteLine("     restore - Install dependencies for project.");
+        Console.WriteLine("     depends - List of dependencies.");
+        Console.WriteLine("     run     - Run main executable of project."); 
     }
 }

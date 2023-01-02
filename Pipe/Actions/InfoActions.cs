@@ -40,7 +40,7 @@ public class InfoActions
             Terminal.Exit(1);
         }
 
-        if (!pip.CheckPackageInstalled("nuitka"))
+        if (!pip.Check("nuitka"))
         {
             Terminal.Error("Nuitka not installed! Use 'pip install nuitka' to install it.");
             Terminal.Exit(1); 

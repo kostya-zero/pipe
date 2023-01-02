@@ -20,7 +20,7 @@ public class Runner
         int foundPackages = 0;
         foreach (string package in config.Packages)
         {
-            if (pip.CheckPackageInstalled(package))
+            if (pip.Check(package))
             {
                 foundPackages++;
                 Terminal.Info($"Package '{package}' INSTALLED.");

@@ -19,6 +19,7 @@ public class ProjActions
                 Init();
                 break;
             case "restore":
+                Restore();
                 break;
             case "depends":
                 break;
@@ -49,5 +50,46 @@ public class ProjActions
         Configs.MakeConfig(config);
         Console.WriteLine("Configuration file for your project has been generated!");
         Console.WriteLine("It will be placed with name project.pipe.");
+    }
+
+    private void Restore()
+    {
+        if (!Configs.CheckForConfig())
+        {
+            Terminal.Error("Config not found!");
+            Terminal.Exit(1); 
+        }
+
+        var config = Configs.GetConfig();
+
+        if (config.Packages.Count == 0)
+        {
+            Console.WriteLine("There no dependencies to restore.");
+            Terminal.Exit(0);
+        }
+
+        Pip pip = new Pip();
+
+        foreach (string package in config.Packages)
+        {
+            if (pip.Check(package))
+            {
+                Terminal.Info($"Package '{package}' installed. Updating...");
+                bool updateResult = pip.Update(package);
+                if (!updateResult)
+                {
+                    Terminal.Error($"Pip exited with bad exit code while trying to update '{package}'."); 
+                }
+            }
+            else
+            {
+                bool installResult = pip.Install(package);
+
+                if (!installResult)
+                {
+                    Terminal.Error($"Pip exited with bad exit code while trying to install '{package}'.");
+                }
+            }
+        }
     }
 }

@@ -26,6 +26,8 @@ class Program
                 runner.RunBuild();
                 break;
             case "proj":
+                ProjActions projActions = new ProjActions();
+                projActions.Resolve(args);
                 break;
             case "info":
                 InfoActions infoActions = new InfoActions();

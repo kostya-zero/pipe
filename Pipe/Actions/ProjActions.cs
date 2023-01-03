@@ -31,6 +31,16 @@ public class ProjActions
                 
                 AddPkg(args[2]); 
                 break;
+            case "rmpkg":
+                if (args.Length == 2)
+                {
+                    Console.WriteLine("Nothing to remove from project! Enter a package name after 'rmpkg'.");
+                    Console.WriteLine("Example: pipe proj rmpkg numpy");
+                    Terminal.Exit(0);
+                }
+                
+                RmPkg(args[2]);  
+                break;
             case "run":
                 break;
             default:
@@ -126,5 +136,21 @@ public class ProjActions
         config.Packages.Add(pkg);
         Configs.UpdateConfig(config);
         Console.WriteLine("Package has been added.");
+    }
+
+    private void RmPkg(string pkg)
+    {
+        Pip pip = new Pip();
+        var config = Configs.GetConfig();
+        if (!config.Packages.Contains(pkg))
+        {
+            Console.WriteLine("Package not in this project!");
+            Terminal.Exit(0);
+        }
+        if (pip.Check(pkg))
+        {
+            config.Packages.Remove(pkg);
+            Console.WriteLine("Package removed.");
+        }
     }
 }

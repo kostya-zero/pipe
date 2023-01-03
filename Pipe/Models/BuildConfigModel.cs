@@ -30,6 +30,9 @@ public class BuildConfigModel
     
     [JsonPropertyName("pipe_usebytecode")]
     public bool UseBytecode { get; set; } = false;
+
+    [JsonPropertyName("pipe_runbeforebuild")]
+    public List<string> RunBeforeBuild { get; set; } = new List<string>();
     
     [JsonPropertyName("options_onefile")]
     public bool OneFile { get; set; } = false;

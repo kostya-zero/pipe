@@ -189,8 +189,31 @@ public class Runner
         if (config.ProjectVersion.Trim() == "")
         {
             Terminal.Error("Version of project not specified.");
+            Terminal.Exit(4);
         }
         Terminal.Done("All checks complete.");
+        if (config.RunBeforeBuild.Count != 0)
+        {
+            Terminal.Work("Running commands before build...");
+            foreach (string s in config.RunBeforeBuild)
+            {
+                Process commandProc = new Process();
+                ProcessStartInfo commandProcInfo = new ProcessStartInfo
+                {
+                    FileName = "/usr/bin/bash",
+                    Arguments = s
+                };
+                commandProc.StartInfo = commandProcInfo;
+                Terminal.Work(s);
+                commandProc.Start();
+                commandProc.WaitForExit();
+                if (commandProc.ExitCode != 0)
+                {
+                    Terminal.Error($"Command '{s}' exited with bad code ({commandProc.ExitCode.ToString()}).");
+                    Terminal.Exit(4);
+                }
+            }
+        }
         Terminal.Work("Making build arguments tree...");
         string command = GenerateCommand();
         Terminal.Work("Preparing to run...");

@@ -21,7 +21,15 @@ public class ProjActions
             case "restore":
                 Restore();
                 break;
-            case "depends":
+            case "addpkg":
+                if (args.Length == 2)
+                {
+                    Console.WriteLine("Nothing to add to project! Enter a package name after 'addpkg'.");
+                    Console.WriteLine("Example: pipe proj addpkg numpy");
+                    Terminal.Exit(0);
+                }
+                
+                AddPkg(args[2]); 
                 break;
             case "run":
                 break;
@@ -91,5 +99,32 @@ public class ProjActions
                 }
             }
         }
+    }
+
+    private void AddPkg(string pkg)
+    {
+        Pip pip = new Pip();
+        var config = Configs.GetConfig();
+        if (!pip.Check(pkg))
+        {
+            Console.Write($"Package {pkg} not installed! Do you want to proceed? (Y/n) :");
+            string answer = Console.ReadLine().Trim();
+            switch (answer)
+            {
+                case "" or "y" or "yes":
+                    pip.Install(pkg);
+                    break;
+                case "n" or "no":
+                    Console.WriteLine("OK, adding without installation.");
+                    break;
+                default:
+                    Console.WriteLine("OK, adding without installation.");
+                    break;
+            }
+        }
+        
+        config.Packages.Add(pkg);
+        Configs.UpdateConfig(config);
+        Console.WriteLine("Package has been added.");
     }
 }

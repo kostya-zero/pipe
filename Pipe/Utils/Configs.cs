@@ -17,6 +17,12 @@ public class Configs
         File.WriteAllText("project.pipe", json);
     }
 
+    public static void UpdateConfig(BuildConfigModel config)
+    {
+        string json = JsonSerializer.Serialize(config, new JsonSerializerOptions{ WriteIndented = true });
+        File.WriteAllText("project.pipe", json);
+    }
+
     public static BuildConfigModel GetConfig()
     {
         string config = File.ReadAllText("project.pipe");

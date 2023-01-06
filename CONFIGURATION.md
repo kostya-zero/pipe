@@ -4,6 +4,7 @@
 - `project_version` - version of your application/module.
 - `pipe_buildmodule` - build a Python module.
 - `pipe_noconsole` - building a window application.
+- `pipe_runbeforebuild` - run commands before build application/module. Each command will be executed with `bash`.
 - `pipe_lto` - allows you to enable **L**ink **T**ime **O**ptimization (LTO). It can have 3 possible values.
 - - `0` - LTO disabled.
 - - `1` - LTO enabled.

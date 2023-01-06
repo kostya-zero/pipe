@@ -53,7 +53,6 @@ public class InfoActions
     {
         Console.WriteLine("Pipe:");
         Console.WriteLine($"     Version:           {VersionInfo.Version}");
-        Console.WriteLine($"     Codename:          {VersionInfo.Codename}");
         Console.WriteLine( "     .NET Version:      7.0.101");
         Console.WriteLine($"     Release Candidate: {VersionInfo.ReleaseCandidate}\n");
         Console.WriteLine("System:");

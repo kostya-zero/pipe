@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Pipe.Models;
 using Pipe.Utils;
 
@@ -42,6 +43,7 @@ public class ProjActions
                 RmPkg(args[2]);  
                 break;
             case "run":
+                Run();
                 break;
             default:
                 Terminal.Error("Unknown positional argument.");
@@ -93,17 +95,14 @@ public class ProjActions
             if (pip.Check(package))
             {
                 Terminal.Info($"Package '{package}' installed. Updating...");
-                bool updateResult = pip.Update(package);
-                if (!updateResult)
+                if (!pip.Update(package))
                 {
                     Terminal.Error($"Pip exited with bad exit code while trying to update '{package}'."); 
                 }
             }
             else
             {
-                bool installResult = pip.Install(package);
-
-                if (!installResult)
+                if (!pip.Install(package))
                 {
                     Terminal.Error($"Pip exited with bad exit code while trying to install '{package}'.");
                 }
@@ -118,11 +117,15 @@ public class ProjActions
         if (!pip.Check(pkg))
         {
             Console.Write($"Package {pkg} not installed! Do you want to proceed? (Y/n) :");
-            string answer = Console.ReadLine().Trim();
+            var answer = Console.ReadLine()?.Trim();
             switch (answer)
             {
                 case "" or "y" or "yes":
-                    pip.Install(pkg);
+                    if (!pip.Install(pkg))
+                    {
+                        Terminal.Error("Got error while trying to install package.");
+                        Terminal.Exit(1);
+                    }
                     break;
                 case "n" or "no":
                     Console.WriteLine("OK, adding without installation.");
@@ -152,5 +155,35 @@ public class ProjActions
             config.Packages.Remove(pkg);
             Console.WriteLine("Package removed.");
         }
+    }
+
+    private void Run()
+    {
+        if (!Configs.CheckForConfig())
+        {
+            Terminal.Error("Config not found!");
+            Terminal.Exit(1);
+        }
+
+        var config = Configs.GetConfig();
+        Process proc = new Process();
+        ProcessStartInfo procInfo = new ProcessStartInfo
+        {
+            FileName = "python",
+            Arguments = config.MainExecutableName
+        };
+        proc.StartInfo = procInfo;
+        proc.Start();
+        proc.WaitForExit();
+
+        if (proc.ExitCode == 0)
+        {
+            Terminal.Done("Process exited with code 0.");
+        }
+        
+        if (proc.ExitCode != 0)
+        {
+            Terminal.Warn($"Process exited with code {proc.ExitCode.ToString()}");
+        } 
     }
 }

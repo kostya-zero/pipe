@@ -1,4 +1,6 @@
 # Pipe
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6bf12d0bf98345a7baba35c0804a44ef)](https://www.codacy.com/gl/kostya-zero/pipe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/pipe&amp;utm_campaign=Badge_Grade)
+
 Pipe is a build system that allows you to easily build your Python applications. 
 It uses Nuitka as backend and making your compiled applications a lot faster. 
 Configuration file is a JSON format file and has a lot of options to use.

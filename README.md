@@ -37,5 +37,5 @@ Nuitka will show you if there are errors in your project.
 ```shell
 pipe build
 ```
-To get a list of available command, run `pipe` with `help` argument.
-To get help for specific command, run `pipe` with command and `help` as positional argument.
+
+If you want to get help about commands use `pipe help` to get list of available commands.

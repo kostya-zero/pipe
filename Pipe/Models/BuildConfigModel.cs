@@ -20,16 +20,16 @@ public class BuildConfigModel
     public bool DisableConsole { get; set; } = false;
     
     [JsonPropertyName("pipe_lto")]
-    public int LTO { get; set; } = 0;
+    public int LTO { get; set; }
     
     [JsonPropertyName("pipe_jobs")]
     public int Jobs { get; set; } = 1;
     
     [JsonPropertyName("pipe_useccache")]
-    public bool UseCCache { get; set; } = false;
+    public bool UseCCache { get; set; }
     
     [JsonPropertyName("pipe_usebytecode")]
-    public bool UseBytecode { get; set; } = false;
+    public bool UseBytecode { get; set; }
 
     [JsonPropertyName("pipe_runbeforebuild")]
     public List<string> RunBeforeBuild { get; set; } = new List<string>();
@@ -38,7 +38,7 @@ public class BuildConfigModel
     public bool OneFile { get; set; } = false;
     
     [JsonPropertyName("options_standalone")]
-    public bool StandAlone { get; set; } = false;
+    public bool StandAlone { get; set; }
     
     [JsonPropertyName("options_followimports")]
     public bool FollowImports { get; set; } = true;
@@ -56,5 +56,5 @@ public class BuildConfigModel
     public List<string> IncludeDirectories { get; set; } = new List<string>();
     
     [JsonPropertyName("depends_nofollowto")]
-    public List<string> NoFollowTo { get; set; } = new List<string>();
+    public List<string> NoFollowTo { get; set; } = new List<string>(new [] { "email", "http"});
 }

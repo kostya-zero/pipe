@@ -2,7 +2,7 @@ using Console = System.Console;
 
 namespace Pipe.Utils;
 
-public class HelpMessages
+public static class HelpMessages
 {
     public static void HeaderMessage()
     {

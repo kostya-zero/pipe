@@ -153,6 +153,7 @@ public class ProjActions
         if (pip.Check(pkg))
         {
             config.Packages.Remove(pkg);
+            Configs.UpdateConfig(config);
             Console.WriteLine("Package removed.");
         }
     }

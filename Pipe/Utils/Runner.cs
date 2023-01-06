@@ -128,22 +128,25 @@ public class Runner
             command.Append($" --jobs={config.Jobs.ToString()}");
         }
 
-        if (config.LTO != 0)
+        switch (config.LTO)
         {
-            switch (config.LTO)
-            {
-                case 1:
-                    command.Append(" --lto=yes");
-                    Terminal.Warn("LTO enabled.");
-                    break;
-                case 2:
-                    command.Append(" --lto=auto");
-                    Terminal.Warn("LTO set to auto.");
-                    break;
-            }
+            case 0:
+                break;
+            case 1:
+                command.Append(" --lto=yes");
+                Terminal.Warn("LTO enabled.");
+                break;
+            case 2:
+                command.Append(" --lto=auto");
+                Terminal.Warn("LTO set to auto.");
+                break;
+            default:
+                Terminal.Warn($"Option 'pipe_lto' has value that out of range ({config.LTO.ToString()}). " +
+                              "Ignoring.");
+                break;
         }
 
-        if (config.DisableConsole)
+            if (config.DisableConsole)
         {
             command.Append(" --disable-console");
         }

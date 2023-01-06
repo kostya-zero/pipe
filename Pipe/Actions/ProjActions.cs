@@ -54,7 +54,7 @@ public class ProjActions
 
     private void Init()
     {
-        if (Configs.CheckForConfig())
+        if (RecipeManager.CheckForRecipe())
         {
             Terminal.Error("Config already exists!");
             Terminal.Exit(1);
@@ -62,25 +62,25 @@ public class ProjActions
         string name = Terminal.Ask("Enter name of your project.", "pipe_project");
         string mainExec = Terminal.Ask("Enter name of main executable file.", "main.py");
         Terminal.Work("Generating config model...");
-        BuildConfigModel config = new BuildConfigModel
+        RecipeModel config = new RecipeModel
         {
             ProjectName = name,
             MainExecutableName = mainExec
         };
-        Configs.MakeConfig(config);
+        RecipeManager.MakeRecipe(config);
         Console.WriteLine("Configuration file for your project has been generated!");
-        Console.WriteLine("It will be placed with name project.pipe.");
+        Console.WriteLine("It will be placed with name recipe.pipe.");
     }
 
     private void Restore()
     {
-        if (!Configs.CheckForConfig())
+        if (!RecipeManager.CheckForRecipe())
         {
             Terminal.Error("Config not found!");
             Terminal.Exit(1); 
         }
 
-        var config = Configs.GetConfig();
+        var config = RecipeManager.GetRecipe();
 
         if (config.Packages.Count == 0)
         {
@@ -113,7 +113,7 @@ public class ProjActions
     private void AddPkg(string pkg)
     {
         Pip pip = new Pip();
-        var config = Configs.GetConfig();
+        var config = RecipeManager.GetRecipe();
         if (!pip.Check(pkg))
         {
             Console.Write($"Package {pkg} not installed! Do you want to proceed? (Y/n) :");
@@ -137,14 +137,14 @@ public class ProjActions
         }
         
         config.Packages.Add(pkg);
-        Configs.UpdateConfig(config);
+        RecipeManager.UpdateRecipe(config);
         Console.WriteLine("Package has been added.");
     }
 
     private void RmPkg(string pkg)
     {
         Pip pip = new Pip();
-        var config = Configs.GetConfig();
+        var config = RecipeManager.GetRecipe();
         if (!config.Packages.Contains(pkg))
         {
             Console.WriteLine("Package not in this project!");
@@ -153,20 +153,20 @@ public class ProjActions
         if (pip.Check(pkg))
         {
             config.Packages.Remove(pkg);
-            Configs.UpdateConfig(config);
+            RecipeManager.UpdateRecipe(config);
             Console.WriteLine("Package removed.");
         }
     }
 
     private void Run()
     {
-        if (!Configs.CheckForConfig())
+        if (!RecipeManager.CheckForRecipe())
         {
             Terminal.Error("Config not found!");
             Terminal.Exit(1);
         }
 
-        var config = Configs.GetConfig();
+        var config = RecipeManager.GetRecipe();
         Process proc = new Process();
         ProcessStartInfo procInfo = new ProcessStartInfo
         {

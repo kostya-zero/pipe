@@ -6,10 +6,10 @@ namespace Pipe.Utils;
 
 public class Runner
 {
-    private BuildConfigModel config { get; set; } = new BuildConfigModel();
+    private RecipeModel config { get; set; } = new RecipeModel();
     private Pip pip { get; } = new Pip();
 
-    public void SetConfig(BuildConfigModel configModel)
+    public void SetConfig(RecipeModel configModel)
     {
         config = configModel;
     }

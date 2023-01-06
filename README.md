@@ -23,19 +23,19 @@ Let's install it step-by-step:
 - **5.** Finish.
 
 ## Usage
-To start creating your application, generate a configuration file for Pipe.
+To start creating your application, generate a **Recipe** for Pipe.
 The wizard will ask you for the name of project and the name of main executable.
 The second one must match the real name of the main executable, otherwise Nuitka will not build it correctly and give an error.
 ```shell
-pipe build genconfig
+pipe proj init
 ```
-Now you have a file named `project.pipe` that contains information about your project.
+Now you have a file named `recipe.pipe` that contains information about your project.
 If you want to get explanation of each property in this configuration file, visit [CONFIGURATION.md](CONFIGURATION.md).
 
 To build an application, run the command below. 
 Nuitka will show you if there are errors in your project.
 ```shell
-pipe build start
+pipe build
 ```
 To get a list of available command, run `pipe` with `help` argument.
 To get help for specific command, run `pipe` with command and `help` as positional argument.

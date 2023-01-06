@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Pipe.Models;
 
-public class BuildConfigModel
+public class RecipeModel
 {
     [JsonPropertyName("project_name")]
     public string ProjectName { get; set; } = "pipe_project";

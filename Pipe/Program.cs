@@ -16,13 +16,13 @@ class Program
         switch (args[0])
         {
             case "build":
-                if (!Configs.CheckForConfig())
+                if (!RecipeManager.CheckForRecipe())
                 {
                     Terminal.Error("Config not found!");
                     Terminal.Exit(1); 
                 }
                 Runner runner = new Runner();
-                runner.SetConfig(Configs.GetConfig());
+                runner.SetConfig(RecipeManager.GetRecipe());
                 runner.RunBuild();
                 break;
             case "proj":

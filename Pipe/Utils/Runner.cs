@@ -151,10 +151,6 @@ public class Runner
             command.Append(" --disable-console");
         }
 
-        if (!config.UseBytecode)
-        {
-            command.Append(" --disable-bytecode-cache"); 
-        }
         
         if (!config.UseCCache)
         {

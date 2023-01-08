@@ -19,18 +19,15 @@ public class RecipeModel
     [JsonPropertyName("pipe_noconsole")]
     public bool DisableConsole { get; set; } = false;
     
-    [JsonPropertyName("pipe_lto")]
+    [JsonPropertyName("nuitka_lto")]
     public int LTO { get; set; }
     
-    [JsonPropertyName("pipe_jobs")]
+    [JsonPropertyName("nuitka_jobs")]
     public int Jobs { get; set; } = 1;
     
-    [JsonPropertyName("pipe_useccache")]
+    [JsonPropertyName("nuitka_useccache")]
     public bool UseCCache { get; set; }
     
-    [JsonPropertyName("pipe_usebytecode")]
-    public bool UseBytecode { get; set; }
-
     [JsonPropertyName("pipe_runbeforebuild")]
     public List<string> RunBeforeBuild { get; set; } = new List<string>();
     

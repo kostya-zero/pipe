@@ -161,6 +161,11 @@ public class Runner
             command.Append(" --disable-ccache"); 
         }
 
+        if (!config.UseClang)
+        {
+            command.Append(" --use-clang");
+        }
+
         command.Append(" " + config.MainExecutableName);
 
         return command.ToString();

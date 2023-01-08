@@ -37,6 +37,9 @@ public class RecipeModel
     [JsonPropertyName("pipe_customshell")]
     public string CustomShell { get; set; }
     
+    [JsonPropertyName("nuitka_useclang")]
+    public bool UseClang { get; set; }
+    
     [JsonPropertyName("options_onefile")]
     public bool OneFile { get; set; } = false;
     

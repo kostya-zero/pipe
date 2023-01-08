@@ -13,6 +13,12 @@ public class RecipeModel
     [JsonPropertyName("project_version")]
     public string ProjectVersion { get; set; } = "1.0.0";
 
+    [JsonPropertyName("project_descritpion")] 
+    public string ProjectDescription { get; set; } = "An App built with Pipe!";
+
+    [JsonPropertyName("project_author")]
+    public string ProjectAuthor { get; set; } = "Me";
+
     [JsonPropertyName("pipe_buildmodule")]
     public bool ItsModules { get; set; } = false;
     

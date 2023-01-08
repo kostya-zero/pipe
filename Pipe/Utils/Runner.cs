@@ -237,6 +237,11 @@ public class Runner
         Terminal.Work("Running nuitka...");
         proc.Start();
         proc.WaitForExit();
+        if (proc.ExitCode != 0)
+        {
+            Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()})");
+            Terminal.Exit(4);
+        }
         Terminal.Info($"Nuitka finished with exit code -> {proc.ExitCode.ToString()}");
         Terminal.Done("Build finished.");
     }

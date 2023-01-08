@@ -197,13 +197,19 @@ public class Runner
         Terminal.Done("All checks complete.");
         if (config.RunBeforeBuild.Count != 0)
         {
+            string shell = "bash";
+            if (config.CustomShell != "")
+            {
+                shell = config.CustomShell;
+            }
+            
             Terminal.Work("Running commands before build...");
             foreach (string s in config.RunBeforeBuild)
             {
                 Process commandProc = new Process();
                 ProcessStartInfo commandProcInfo = new ProcessStartInfo
                 {
-                    FileName = "/usr/bin/bash",
+                    FileName = shell,
                     Arguments = s
                 };
                 commandProc.StartInfo = commandProcInfo;

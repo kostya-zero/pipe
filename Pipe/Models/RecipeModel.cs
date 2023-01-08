@@ -34,6 +34,9 @@ public class RecipeModel
     [JsonPropertyName("pipe_runbeforebuild")]
     public List<string> RunBeforeBuild { get; set; } = new List<string>();
     
+    [JsonPropertyName("pipe_customshell")]
+    public string CustomShell { get; set; }
+    
     [JsonPropertyName("options_onefile")]
     public bool OneFile { get; set; } = false;
     

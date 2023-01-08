@@ -82,9 +82,9 @@ public class Runner
             }
         }
 
-        if (config.NoFollowTo.Count != 0)
+        if (config.IgnorePkgs.Count != 0)
         {
-            foreach (string s in config.NoFollowTo)
+            foreach (string s in config.IgnorePkgs)
             {
                 command.Append($" --nofollow-import-to={s}");
             }
@@ -211,7 +211,9 @@ public class Runner
                 ProcessStartInfo commandProcInfo = new ProcessStartInfo
                 {
                     FileName = shell,
-                    Arguments = s
+                    Arguments = s,
+                    RedirectStandardInput = config.ShowOnlyErrors,
+                    RedirectStandardOutput = config.ShowOnlyErrors
                 };
                 commandProc.StartInfo = commandProcInfo;
                 Terminal.Work(s);

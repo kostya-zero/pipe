@@ -51,6 +51,9 @@ public class RecipeModel
     
     [JsonPropertyName("options_lowmemory")]
     public bool LowMemoryMode { get; set; } = false;
+    
+    [JsonPropertyName("options_showonlyerror")]
+    public bool ShowOnlyErrors { get; set; }
 
     [JsonPropertyName("depends_packages")]
     public List<string> Packages { get; set; } = new List<string>();
@@ -58,6 +61,6 @@ public class RecipeModel
     [JsonPropertyName("depends_includedirs")]
     public List<string> IncludeDirectories { get; set; } = new List<string>();
     
-    [JsonPropertyName("depends_nofollowto")]
-    public List<string> NoFollowTo { get; set; } = new List<string>(new [] { "email", "http"});
+    [JsonPropertyName("depends_ignorepkgs")]
+    public List<string> IgnorePkgs { get; set; } = new List<string>(new [] { "email", "http"});
 }

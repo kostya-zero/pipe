@@ -92,41 +92,16 @@ public class Runner
 
         command.Append($" --product-version={config.ProjectVersion.Trim()}");
 
-        if (config.OneFile)
-        {
-            command.Append(" --onefile");
-        }
+        if (config.OneFile) command.Append(" --onefile");
+        if (config.StandAlone) command.Append(" --standalone");
+        if (config.FollowImports) command.Append(" --follow-imports");
+        if (config.IgnorePyiFiles) command.Append(" --no-pyi-file");
         
-        if (config.StandAlone)
-        {
-            command.Append(" --standalone");
-        }
-        
-        if (config.FollowImports)
-        {
-            command.Append(" --follow-imports");
-        }
-        
-        if (config.IgnorePyiFiles)
-        {
-            command.Append(" --no-pyi-file");
-        }
-        
-        if (config.LowMemoryMode)
-        {
-            command.Append(" --low-memory");
+        if (config.LowMemoryMode) command.Append(" --low-memory"); 
             Terminal.Warn("Using low memory compilation mode.");
-        }
 
-        if (config.ItsModules)
-        {
-            command.Append(" --module");
-        }
-
-        if (config.Jobs != 0)
-        {
-            command.Append($" --jobs={config.Jobs.ToString()}");
-        }
+        if (config.ItsModules) command.Append(" --module");
+        if (config.Jobs != 0) command.Append($" --jobs={config.Jobs.ToString()}");
 
         switch (config.LTO)
         {
@@ -146,21 +121,9 @@ public class Runner
                 break;
         }
 
-            if (config.DisableConsole)
-        {
-            command.Append(" --disable-console");
-        }
-
-        
-        if (!config.UseCCache)
-        {
-            command.Append(" --disable-ccache"); 
-        }
-
-        if (!config.UseClang)
-        {
-            command.Append(" --use-clang");
-        }
+        if (config.DisableConsole) command.Append(" --disable-console");
+        if (!config.UseCCache) command.Append(" --disable-ccache");
+        if (config.UseClang) command.Append(" --use-clang");
 
         command.Append(" " + config.MainExecutableName);
 

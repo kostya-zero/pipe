@@ -1,3 +1,4 @@
+using Pipe.Models;
 using Pipe.Utils;
 
 namespace Pipe.Actions;
@@ -32,21 +33,26 @@ public class InfoActions
 
     private void Req()
     {
-        Terminal.Info("Checking for requirements...");
         Pip pip = new Pip();
-        if (!File.Exists("/usr/bin/python"))
+        RequirementsModel requirements = new RequirementsModel();
+        Terminal.Info("Trying to find required components...");
+        if (File.Exists("/usr/bin/python")) requirements.FoundPython = true;
+
+        if (!requirements.FoundPython)
         {
-            Terminal.Error("Cannot locate python at '/usr/bin/python'.");
+            Terminal.Error("Cannot continue investigation because Python not found.");
             Terminal.Exit(1);
         }
 
-        if (!pip.Check("nuitka"))
-        {
-            Terminal.Error("Nuitka not installed! Use 'pip install nuitka' to install it.");
-            Terminal.Exit(1); 
-        }
+        if (pip.Check("nuitka")) requirements.FoundNuitka = true;
+        if (File.Exists("/usr/bin/clang") &&
+            File.Exists("/usr/bin/clang++")) requirements.FoundClang = true;
         
-        Terminal.Done("Everything is OK. You are ready to compile.");
+        Console.WriteLine("Investigation completed. Results:");
+        Console.WriteLine("Python: " + (requirements.FoundPython ? "Found" : "Not found"));
+        Console.WriteLine("Nuitka: " + (requirements.FoundNuitka ? "Found" : "Not found")); 
+        Console.WriteLine("Optional:");
+        Console.WriteLine("Clang: " + (requirements.FoundClang ? "Found" : "Not found"));
     }
 
     private void Env()

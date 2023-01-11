@@ -6,34 +6,33 @@ namespace Pipe.Utils;
 
 public class Runner
 {
-    private RecipeModel config { get; set; } = new RecipeModel();
-    private Pip pip { get; } = new Pip();
+    private RecipeModel Config { get; set; } = new RecipeModel();
+    private Pip Pip { get; } = new Pip();
 
     public void SetConfig(RecipeModel configModel)
     {
-        config = configModel;
+        Config = configModel;
     }
 
     private void CheckPackages()
     {
         Terminal.Work("Checking for packages...");
         int foundPackages = 0;
-        foreach (string package in config.Packages)
+        foreach (string package in Config.Packages)
         {
-            if (pip.Check(package))
+            if (Pip.Check(package))
             {
                 foundPackages++;
-                Terminal.Info($"Package '{package}' INSTALLED.");
             }
             else
             {
-                Terminal.Info($"Package '{package}' NOT INSTALLED.");
+                Terminal.Info($"Package '{package}' not installed.");
             }
         }
 
-        if (foundPackages != config.Packages.Count)
+        if (foundPackages != Config.Packages.Count)
         {
-            Terminal.Error($"{(config.Packages.Count - foundPackages).ToString()} packages not found!");
+            Terminal.Error($"{(Config.Packages.Count - foundPackages).ToString()} packages not found!");
             Terminal.Exit(4);
         }
         
@@ -43,22 +42,21 @@ public class Runner
     {
         Terminal.Work("Checking for directories...");
         int foundDirs = 0;
-        foreach (string directory in config.IncludeDirectories)
+        foreach (string directory in Config.IncludeDirectories)
         {
             if (Directory.Exists(directory))
             {
                 foundDirs++;
-                Terminal.Info($"Directory '{directory}' EXIST.");
             }
             else
             {
-                Terminal.Info($"Directory '{directory}' NOT EXIST.");
+                Terminal.Info($"Directory '{directory}' not found.");
             }
         }
         
-        if (foundDirs != config.IncludeDirectories.Count)
+        if (foundDirs != Config.IncludeDirectories.Count)
         {
-            Terminal.Error($"{(config.IncludeDirectories.Count - foundDirs).ToString()} directories not found!");
+            Terminal.Error($"{(Config.IncludeDirectories.Count - foundDirs).ToString()} directories not found!");
             Terminal.Exit(4);
         }
     }
@@ -66,44 +64,35 @@ public class Runner
     private string GenerateCommand()
     {
         StringBuilder command = new StringBuilder("-m nuitka");
-        if (config.Packages.Count != 0)
+        if (Config.Packages.Count != 0)
         {
-            foreach (string package in config.Packages)
-            {
-                command.Append($" --include-package={package}");
-            }
+            foreach (string package in Config.Packages) command.Append($" --include-package={package}");
         }
         
-        if (config.IncludeDirectories.Count != 0)
+        if (Config.IncludeDirectories.Count != 0)
         {
-            foreach (string directory in config.IncludeDirectories)
-            {
-                command.Append($" --include-plugin-directory={directory}");
-            }
+            foreach (string directory in Config.IncludeDirectories) command.Append($" --include-plugin-directory={directory}");
         }
 
-        if (config.IgnorePkgs.Count != 0)
+        if (Config.IgnorePkgs.Count != 0)
         {
-            foreach (string s in config.IgnorePkgs)
-            {
-                command.Append($" --nofollow-import-to={s}");
-            }
+            foreach (string s in Config.IgnorePkgs) command.Append($" --nofollow-import-to={s}");
         }
 
-        command.Append($" --product-version={config.ProjectVersion.Trim()}");
+        command.Append($" --product-version={Config.ProjectVersion.Trim()}");
 
-        if (config.OneFile) command.Append(" --onefile");
-        if (config.StandAlone) command.Append(" --standalone");
-        if (config.FollowImports) command.Append(" --follow-imports");
-        if (config.IgnorePyiFiles) command.Append(" --no-pyi-file");
+        if (Config.OneFile) command.Append(" --onefile");
+        if (Config.StandAlone) command.Append(" --standalone");
+        if (Config.FollowImports) command.Append(" --follow-imports");
+        if (Config.IgnorePyiFiles) command.Append(" --no-pyi-file");
         
-        if (config.LowMemoryMode) command.Append(" --low-memory"); 
+        if (Config.LowMemoryMode) command.Append(" --low-memory"); 
             Terminal.Warn("Using low memory compilation mode.");
 
-        if (config.ItsModules) command.Append(" --module");
-        if (config.Jobs != 0) command.Append($" --jobs={config.Jobs.ToString()}");
+        if (Config.ItsModules) command.Append(" --module");
+        if (Config.Jobs != 0) command.Append($" --jobs={Config.Jobs.ToString()}");
 
-        switch (config.LTO)
+        switch (Config.LTO)
         {
             case 0:
                 break;
@@ -116,16 +105,16 @@ public class Runner
                 Terminal.Warn("LTO set to auto.");
                 break;
             default:
-                Terminal.Warn($"Option 'pipe_lto' has value that out of range ({config.LTO.ToString()}). " +
+                Terminal.Warn($"Option 'pipe_lto' has value that out of range ({Config.LTO.ToString()}). " +
                               "Ignoring.");
                 break;
         }
 
-        if (config.DisableConsole) command.Append(" --disable-console");
-        if (!config.UseCCache) command.Append(" --disable-ccache");
-        if (config.UseClang) command.Append(" --use-clang");
+        if (Config.DisableConsole) command.Append(" --disable-console");
+        if (!Config.UseCCache) command.Append(" --disable-ccache");
+        if (Config.UseClang) command.Append(" --use-clang");
 
-        command.Append(" " + config.MainExecutableName);
+        command.Append(" " + Config.MainExecutableName);
 
         return command.ToString();
     }
@@ -134,56 +123,44 @@ public class Runner
     {
         Terminal.Info("Pipe Build System");
         Terminal.Info($"Pipe {VersionInfo.Version}");
-        if (config.ProjectDescription.Trim() != "")
+        if (Config.ProjectDescription.Trim() != "")
         {
-            Terminal.Info($"Building {config.ProjectName} - {config.ProjectDescription}"); 
+            Terminal.Info($"Building {Config.ProjectName} - {Config.ProjectDescription}");
         }
-        else
-        {
-            Terminal.Info($"Building {config.ProjectName}"); 
-        }
-        string type = config.ItsModules ? "module" : "app";
+        else { Terminal.Info($"Building {Config.ProjectName}"); }
+        
+        string type = Config.ItsModules ? "module" : "app";
         Terminal.Info($"Project type: {type}");
-        if (config.Packages.Count != 0)
+        
+        if (Config.Packages.Count != 0) CheckPackages();
+        if (Config.IncludeDirectories.Count != 0) CheckDirectories();
+        
+        if (!File.Exists(Config.MainExecutableName))
         {
-            CheckPackages();
-        }
-
-        if (config.IncludeDirectories.Count != 0)
-        {
-            CheckDirectories();
-        }
-
-        if (!File.Exists(config.MainExecutableName))
-        {
-            Terminal.Error($"Main file ({config.MainExecutableName}) not found. Aborting compilation...");
+            Terminal.Error($"Main file ({Config.MainExecutableName}) not found. Aborting compilation...");
             Terminal.Exit(4);
         }
 
-        if (config.ProjectVersion.Trim() == "")
+        if (Config.ProjectVersion.Trim() == "")
         {
             Terminal.Error("Version of project not specified.");
             Terminal.Exit(4);
         }
         Terminal.Done("All checks complete.");
-        if (config.RunBeforeBuild.Count != 0)
+        if (Config.RunBeforeBuild.Count != 0)
         {
-            string shell = "bash";
-            if (config.CustomShell != "")
-            {
-                shell = config.CustomShell;
-            }
+            string shell = Config.CustomShell != "" ? Config.CustomShell : "bash";
             
             Terminal.Work("Running commands before build...");
-            foreach (string s in config.RunBeforeBuild)
+            foreach (string s in Config.RunBeforeBuild)
             {
                 Process commandProc = new Process();
                 ProcessStartInfo commandProcInfo = new ProcessStartInfo
                 {
                     FileName = shell,
                     Arguments = s,
-                    RedirectStandardInput = config.ShowOnlyErrors,
-                    RedirectStandardOutput = config.ShowOnlyErrors
+                    RedirectStandardInput = Config.ShowOnlyErrors,
+                    RedirectStandardOutput = Config.ShowOnlyErrors
                 };
                 commandProc.StartInfo = commandProcInfo;
                 Terminal.Work(s);

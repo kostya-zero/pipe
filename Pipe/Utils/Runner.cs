@@ -170,8 +170,15 @@ public class Runner
     public void RunBuild()
     {
         Terminal.Info("Pipe Build System");
-        Terminal.Info($"Pipe version: {VersionInfo.Version}");
-        Terminal.Info($"Project: {config.ProjectName}");
+        Terminal.Info($"Pipe {VersionInfo.Version}");
+        if (config.ProjectDescription.Trim() != "")
+        {
+            Terminal.Info($"Building {config.ProjectName} - {config.ProjectDescription}"); 
+        }
+        else
+        {
+            Terminal.Info($"Building {config.ProjectName}"); 
+        }
         string type = config.ItsModules ? "module" : "app";
         Terminal.Info($"Project type: {type}");
         if (config.Packages.Count != 0)

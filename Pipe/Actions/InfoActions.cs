@@ -45,14 +45,17 @@ public class InfoActions
         }
 
         if (pip.Check("nuitka")) requirements.FoundNuitka = true;
+        if (File.Exists("/usr/bin/gcc")) requirements.FoundGcc = true;
         if (File.Exists("/usr/bin/clang") &&
             File.Exists("/usr/bin/clang++")) requirements.FoundClang = true;
         
         Console.WriteLine("Investigation completed. Results:");
         Console.WriteLine("Python: " + (requirements.FoundPython ? "Found" : "Not found"));
-        Console.WriteLine("Nuitka: " + (requirements.FoundNuitka ? "Found" : "Not found")); 
+        Console.WriteLine("Nuitka: " + (requirements.FoundNuitka ? "Found" : "Not found"));
+        Console.WriteLine("GCC: " + (requirements.FoundGcc ? "Found" : "Not found"));
         Console.WriteLine("Optional:");
         Console.WriteLine("Clang: " + (requirements.FoundClang ? "Found" : "Not found"));
+        Console.WriteLine("     Clang are needed to build application by using clang as backend compiler");
     }
 
     private void Env()

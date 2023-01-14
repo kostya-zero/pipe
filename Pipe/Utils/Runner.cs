@@ -111,13 +111,12 @@ public class Runner
         }
 
         if (Config.DisableConsole) command.Append(" --disable-console");
-        if (!Config.UseCCache) command.Append(" --disable-ccache");
         switch (Config.BackendCompiler)
         {
             case "gcc":
                 break;
             case "clang":
-                command.Append(" --use-clang");
+                command.Append(" --clang");
                 break;
             default:
                 Terminal.Error($"Unknown compiler: {Config.BackendCompiler}. Using defaults.");

@@ -52,7 +52,7 @@ public class InfoActions
         Console.WriteLine("Investigation completed. Results:");
         Console.WriteLine("Python: " + (requirements.FoundPython ? "Found" : "Not found"));
         Console.WriteLine("Nuitka: " + (requirements.FoundNuitka ? "Found" : "Not found"));
-        Console.WriteLine("GCC: " + (requirements.FoundGcc ? "Found" : "Not found"));
+        Console.WriteLine("GCC: " + (requirements.FoundGcc ? "Found" : "Not found") + "\n");
         Console.WriteLine("Optional:");
         Console.WriteLine("Clang: " + (requirements.FoundClang ? "Found" : "Not found"));
         Console.WriteLine("     Clang are needed to build application by using clang as backend compiler");

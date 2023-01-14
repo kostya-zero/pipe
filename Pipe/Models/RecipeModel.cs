@@ -13,11 +13,8 @@ public class RecipeModel
     [JsonPropertyName("Project_Version")]
     public string ProjectVersion { get; set; } = "1.0.0";
 
-    [JsonPropertyName("Project_Descritpion")] 
+    [JsonPropertyName("Project_Description")] 
     public string ProjectDescription { get; set; } = "An App built with Pipe!";
-
-    [JsonPropertyName("Project_Author")]
-    public string ProjectAuthor { get; set; } = "Me";
 
     [JsonPropertyName("Pipe_BuildModule")]
     public bool ItsModules { get; set; } = false;
@@ -25,7 +22,7 @@ public class RecipeModel
     [JsonPropertyName("Pipe_NoConsole")]
     public bool DisableConsole { get; set; } = false;
     
-    [JsonPropertyName("Pipe_BackendCompiler")]
+    [JsonPropertyName("Nuitka_BackendCompiler")]
     public string BackendCompiler { get; set; } = "gcc";
     
     [JsonPropertyName("Nuitka_LTO")]
@@ -33,9 +30,6 @@ public class RecipeModel
     
     [JsonPropertyName("Nuitka_Jobs")]
     public int Jobs { get; set; } = 1;
-    
-    [JsonPropertyName("Nuitka_UseCcache")]
-    public bool UseCCache { get; set; }
     
     [JsonPropertyName("Pipe_RunBeforeBuild")]
     public List<string> RunBeforeBuild { get; set; } = new List<string>();
@@ -67,6 +61,6 @@ public class RecipeModel
     [JsonPropertyName("Depends_IncludeDirs")]
     public List<string> IncludeDirectories { get; set; } = new List<string>();
     
-    [JsonPropertyName("Depends_IgnorePkgs")]
+    [JsonPropertyName("Depends_IgnorePackages")]
     public List<string> IgnorePkgs { get; set; } = new List<string>(new [] { "email", "http"});
 }

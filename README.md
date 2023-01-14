@@ -8,7 +8,7 @@ Configuration file is a JSON format file and has a lot of options to use.
 ## Requirements
 Important: 
 - `python` - to make your applications work.
-- `nutika` - backend for pipe to build applications. Must be installed with `pip`.
+- `nuitka` - backend for pipe to build applications. Must be installed with `pip`.
 
 Optional:
 - `ccache` - required to allow Nuitka use ccache (`pipe_useccache`).

@@ -16,7 +16,7 @@ Optional:
 ## Installation
 You can install Pipe for the x64 and ARM64 platforms.
 Let's install it step-by-step:
-- **1.** Go to releases section and select your preferred version.
+- **1.** Go to releases section on [Official GitLab repository](https://gitlab.com/kostya-zero/pipe/-/releases) and select your preferred version.
 - **2.** Download a binary file that matches your architecture and system (`pipe-<system>-<version>-<arch>.zip`, example: `pipe-linux-1.0-arm64.zip`).
 - **3.** Place it where you want.
 - **4.** Make sure that .NET Runtime are installed on your system.

@@ -38,7 +38,7 @@ public class RecipeModel
     public string CustomShell { get; set; } = "";
     
     [JsonPropertyName("Options_OneFile")]
-    public bool OneFile { get; set; } = false;
+    public bool OneFile { get; set; }
     
     [JsonPropertyName("Options_Standalone")]
     public bool StandAlone { get; set; }

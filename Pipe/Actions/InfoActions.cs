@@ -36,7 +36,7 @@ public class InfoActions
         Pip pip = new Pip();
         RequirementsModel requirements = new RequirementsModel();
         Terminal.Info("Trying to find required components...");
-        if (File.Exists("/usr/bin/python")) requirements.FoundPython = true;
+        if (File.Exists("/usr/bin/python")) { requirements.FoundPython = true; }
 
         if (!requirements.FoundPython)
         {
@@ -44,12 +44,12 @@ public class InfoActions
             Terminal.Exit(1);
         }
 
-        if (pip.Check("nuitka")) requirements.FoundNuitka = true;
-        if (File.Exists("/usr/bin/gcc")) requirements.FoundGcc = true;
+        if (pip.Check("nuitka")) { requirements.FoundNuitka = true; }
+        if (File.Exists("/usr/bin/gcc")) { requirements.FoundGcc = true; }
         if (File.Exists("/usr/bin/clang") &&
-            File.Exists("/usr/bin/clang++")) requirements.FoundClang = true;
-        
-        Console.WriteLine("Investigation completed. Results:");
+            File.Exists("/usr/bin/clang++")) { requirements.FoundClang = true; }
+
+    Console.WriteLine("Investigation completed. Results:");
         Console.WriteLine("Python: " + (requirements.FoundPython ? "Found" : "Not found"));
         Console.WriteLine("Nuitka: " + (requirements.FoundNuitka ? "Found" : "Not found"));
         Console.WriteLine("GCC: " + (requirements.FoundGcc ? "Found" : "Not found") + "\n");

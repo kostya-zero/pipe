@@ -66,31 +66,31 @@ public class Runner
         StringBuilder command = new StringBuilder("-m nuitka");
         if (Config.Packages.Count != 0)
         {
-            foreach (string package in Config.Packages) command.Append($" --include-package={package}");
+            foreach (string package in Config.Packages) {command.Append($" --include-package={package}");}
         }
         
         if (Config.IncludeDirectories.Count != 0)
         {
-            foreach (string directory in Config.IncludeDirectories) command.Append($" --include-plugin-directory={directory}");
+            foreach (string directory in Config.IncludeDirectories) {command.Append($" --include-plugin-directory={directory}");}
         }
 
         if (Config.IgnorePkgs.Count != 0)
         {
-            foreach (string s in Config.IgnorePkgs) command.Append($" --nofollow-import-to={s}");
+            foreach (string s in Config.IgnorePkgs) {command.Append($" --nofollow-import-to={s}");}
         }
 
         command.Append($" --product-version={Config.ProjectVersion.Trim()}");
 
-        if (Config.OneFile) command.Append(" --onefile");
-        if (Config.StandAlone) command.Append(" --standalone");
-        if (Config.FollowImports) command.Append(" --follow-imports");
-        if (Config.IgnorePyiFiles) command.Append(" --no-pyi-file");
+        if (Config.OneFile) {command.Append(" --onefile");}
+        if (Config.StandAlone) {command.Append(" --standalone");}
+        if (Config.FollowImports) {command.Append(" --follow-imports");}
+        if (Config.IgnorePyiFiles) {command.Append(" --no-pyi-file");}
         
-        if (Config.LowMemoryMode) command.Append(" --low-memory"); 
+        if (Config.LowMemoryMode) {command.Append(" --low-memory");} 
             Terminal.Warn("Using low memory compilation mode.");
 
-        if (Config.ItsModules) command.Append(" --module");
-        if (Config.Jobs != 0) command.Append($" --jobs={Config.Jobs.ToString()}");
+        if (Config.ItsModules) {command.Append(" --module");}
+        if (Config.Jobs != 0) {command.Append($" --jobs={Config.Jobs.ToString()}");}
 
         switch (Config.LTO)
         {
@@ -110,7 +110,7 @@ public class Runner
                 break;
         }
 
-        if (Config.DisableConsole) command.Append(" --disable-console");
+        if (Config.DisableConsole) {command.Append(" --disable-console");}
         switch (Config.BackendCompiler)
         {
             case "gcc":

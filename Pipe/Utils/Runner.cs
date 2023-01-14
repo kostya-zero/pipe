@@ -141,8 +141,8 @@ public class Runner
         string type = Config.ItsModules ? "module" : "app";
         Terminal.Info($"Project type: {type}");
         
-        if (Config.Packages.Count != 0) CheckPackages();
-        if (Config.IncludeDirectories.Count != 0) CheckDirectories();
+        if (Config.Packages.Count != 0) {CheckPackages();}
+        if (Config.IncludeDirectories.Count != 0) {CheckDirectories();}
         
         if (!File.Exists(Config.MainExecutableName))
         {

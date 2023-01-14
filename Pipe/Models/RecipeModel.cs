@@ -17,10 +17,10 @@ public class RecipeModel
     public string ProjectDescription { get; set; } = "An App built with Pipe!";
 
     [JsonPropertyName("Pipe_BuildModule")]
-    public bool ItsModules { get; set; } = false;
+    public bool ItsModules { get; set; }
     
     [JsonPropertyName("Pipe_NoConsole")]
-    public bool DisableConsole { get; set; } = false;
+    public bool DisableConsole { get; set; }
     
     [JsonPropertyName("Nuitka_BackendCompiler")]
     public string BackendCompiler { get; set; } = "gcc";
@@ -50,7 +50,7 @@ public class RecipeModel
     public bool IgnorePyiFiles { get; set; } = true;
     
     [JsonPropertyName("Options_LowMemory")]
-    public bool LowMemoryMode { get; set; } = false;
+    public bool LowMemoryMode { get; set; }
     
     [JsonPropertyName("Options_ShowOnlyError")]
     public bool ShowOnlyErrors { get; set; }

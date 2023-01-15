@@ -118,6 +118,9 @@ public class Runner
             case "clang":
                 command.Append(" --clang");
                 break;
+            case "":
+                Terminal.Warn("No compiler specified! Fallback to GCC.");
+                break;
             default:
                 Terminal.Error($"Unknown compiler: {Config.BackendCompiler}. Using defaults.");
                 break;

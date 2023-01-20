@@ -111,15 +111,69 @@ public class Runner
         }
 
         if (Config.DisableConsole) {command.Append(" --disable-console");}
+        bool binaryNotFound = false;
         switch (Config.BackendCompiler)
         {
             case "gcc":
+                Terminal.Work("Searching for GCC binaries...");
+                if (File.Exists("/usr/bin/gcc"))
+                {
+                    Terminal.Done("'/usr/bin/gcc' found.");
+                }
+                else
+                {
+                    Terminal.Error("'/usr/bin/gcc' not found!");
+                    binaryNotFound = true;
+                }
+                
+                if (File.Exists("/usr/bin/g++"))
+                {
+                    Terminal.Done("'/usr/bin/g++' found.");
+                }
+                else
+                {
+                    Terminal.Error("'/usr/bin/g++' not found!");
+                    binaryNotFound = true;
+                }
+
+                if (binaryNotFound)
+                {
+                    Terminal.Error("Cannot continue because some compilers binaries not found.");
+                    Terminal.Exit(4);
+                }
                 break;
             case "clang":
+                Terminal.Work("Searching for Clang binaries...");
+                if (File.Exists("/usr/bin/clang"))
+                {
+                    Terminal.Done("'/usr/bin/clang' found.");
+                }
+                else
+                {
+                    Terminal.Error("'/usr/bin/clang' not found!");
+                    binaryNotFound = true;
+                }
+                
+                if (File.Exists("/usr/bin/clang++"))
+                {
+                    Terminal.Done("'/usr/bin/clang++' found.");
+                }
+                else
+                {
+                    Terminal.Error("'/usr/bin/clang++' not found!");
+                    binaryNotFound = true;
+                }
+
+                if (binaryNotFound)
+                {
+                    Terminal.Error("Cannot continue because some compilers binaries not found.");
+                    Terminal.Exit(4);
+                }
                 command.Append(" --clang");
                 break;
             case "":
-                Terminal.Warn("No compiler specified! Fallback to GCC.");
+                Terminal.Warn("No compiler specified!");
+                Terminal.Exit(4);
                 break;
             default:
                 Terminal.Error($"Unknown compiler: {Config.BackendCompiler}. Using defaults.");
@@ -133,8 +187,7 @@ public class Runner
 
     public void RunBuild()
     {
-        Terminal.Info("Pipe Build System");
-        Terminal.Info($"Pipe {VersionInfo.Version}");
+        Terminal.Info($"Pipe Build System {VersionInfo.Version}");
         if (Config.ProjectDescription.Trim() != "")
         {
             Terminal.Info($"Building {Config.ProjectName} - {Config.ProjectDescription}");
@@ -142,14 +195,14 @@ public class Runner
         else { Terminal.Info($"Building {Config.ProjectName}"); }
         
         string type = Config.ItsModules ? "module" : "app";
-        Terminal.Info($"Project type: {type}");
+        Terminal.Info($"Configuration: {type}");
         
         if (Config.Packages.Count != 0) {CheckPackages();}
         if (Config.IncludeDirectories.Count != 0) {CheckDirectories();}
         
         if (!File.Exists(Config.MainExecutableName))
         {
-            Terminal.Error($"Main file ({Config.MainExecutableName}) not found. Aborting compilation...");
+            Terminal.Error($"Main file ({Config.MainExecutableName}) not found.");
             Terminal.Exit(4);
         }
 
@@ -200,10 +253,10 @@ public class Runner
         proc.WaitForExit();
         if (proc.ExitCode != 0)
         {
-            Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()})");
+            Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()}).");
             Terminal.Exit(4);
         }
-        Terminal.Info($"Nuitka finished with exit code -> {proc.ExitCode.ToString()}");
+        Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");
         Terminal.Done("Build finished.");
     }
 }

@@ -14,16 +14,16 @@ public class RecipeModel
     public string ProjectVersion { get; set; } = "1.0.0";
 
     [JsonPropertyName("Project_Description")] 
-    public string ProjectDescription { get; set; } = "An App built with Pipe!";
+    public string ProjectDescription = "An App built with Pipe!";
 
-    [JsonPropertyName("Pipe_BuildModule")]
-    public bool ItsModules { get; set; }
+    [JsonPropertyName("Project_Type")]
+    public string ProjectType { get; set; }
     
     [JsonPropertyName("Pipe_NoConsole")]
     public bool DisableConsole { get; set; }
     
     [JsonPropertyName("Nuitka_BackendCompiler")]
-    public string BackendCompiler { get; set; } = "gcc";
+    public string BackendCompiler = "gcc";
     
     [JsonPropertyName("Nuitka_LTO")]
     public int LTO { get; set; }

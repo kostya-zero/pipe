@@ -55,7 +55,7 @@ public class InfoActions
         Console.WriteLine("GCC: " + (requirements.FoundGcc ? "Found" : "Not found") + "\n");
         Console.WriteLine("Optional:");
         Console.WriteLine("Clang: " + (requirements.FoundClang ? "Found" : "Not found"));
-        Console.WriteLine("     Clang are needed to build application by using clang as backend compiler");
+        Console.WriteLine("     Clang are needed to build application by using clang as backend compiler\n");
     }
 
     private void Env()

@@ -89,7 +89,18 @@ public class Runner
         if (Config.LowMemoryMode) {command.Append(" --low-memory");} 
             Terminal.Warn("Using low memory compilation mode.");
 
-        if (Config.ItsModules) {command.Append(" --module");}
+        switch (Config.ProjectType.Trim())
+        {
+            case "app":
+                break;
+            case "module":
+                command.Append(" --module");
+                break;
+            default:
+                Terminal.Error($"Unknown project type: {Config.ProjectType}.");
+                Terminal.Exit(4);
+                break;
+    }
         if (Config.Jobs != 0) {command.Append($" --jobs={Config.Jobs.ToString()}");}
 
         switch (Config.LTO)
@@ -112,7 +123,7 @@ public class Runner
 
         if (Config.DisableConsole) {command.Append(" --disable-console");}
         bool binaryNotFound = false;
-        switch (Config.BackendCompiler)
+        switch (Config.BackendCompiler.Trim())
         {
             case "gcc":
                 Terminal.Work("Searching for GCC binaries...");
@@ -194,8 +205,7 @@ public class Runner
         }
         else { Terminal.Info($"Building {Config.ProjectName}"); }
         
-        string type = Config.ItsModules ? "module" : "app";
-        Terminal.Info($"Configuration: {type}");
+        Terminal.Info($"Configuration: {Config.ProjectType}");
         
         if (Config.Packages.Count != 0) {CheckPackages();}
         if (Config.IncludeDirectories.Count != 0) {CheckDirectories();}

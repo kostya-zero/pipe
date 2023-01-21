@@ -37,10 +37,19 @@ public class ProjActions
                 {
                     Console.WriteLine("Nothing to remove from project! Enter a package name after 'rmpkg'.");
                     Console.WriteLine("Example: pipe proj rmpkg numpy");
-                    Terminal.Exit(0);
+                    Terminal.Exit(1);
                 }
                 
                 RmPkg(args[2]);  
+                break;
+            case "type":
+                if (args.Length == 2)
+                {
+                    Terminal.Info("Set type of you project: app or module.");
+                    Terminal.Exit(1);
+                }
+                
+                Type(args[2]);
                 break;
             case "run":
                 Run();
@@ -76,7 +85,7 @@ public class ProjActions
     {
         if (!RecipeManager.CheckForRecipe())
         {
-            Terminal.Error("Config not found!");
+            Terminal.Error("Recipe not found!");
             Terminal.Exit(1); 
         }
 
@@ -158,11 +167,38 @@ public class ProjActions
         }
     }
 
+    private void Type(string projectType)
+    {
+        if (!RecipeManager.CheckForRecipe())
+        {
+            Terminal.Error("Recipe not found!");
+            Terminal.Exit(1);
+        }
+
+        var recipe = RecipeManager.GetRecipe();
+        projectType = projectType.ToLower();
+        switch (projectType)
+        {
+            case "a" or "app":
+                recipe.ProjectType = "app";
+                break;
+            case "m" or "module":
+                recipe.ProjectType = "module";
+                break;
+            default:
+                Terminal.Error("Unknown project type.");
+                Terminal.Exit(1);
+                break;
+        }
+        RecipeManager.UpdateRecipe(recipe);
+        Terminal.Done("New project type applied.");
+    }
+
     private void Run()
     {
         if (!RecipeManager.CheckForRecipe())
         {
-            Terminal.Error("Config not found!");
+            Terminal.Error("Recipe not found!");
             Terminal.Exit(1);
         }
 

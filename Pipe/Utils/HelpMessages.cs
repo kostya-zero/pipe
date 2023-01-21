@@ -26,6 +26,7 @@ public static class HelpMessages
         Console.WriteLine("     init - Initialize a Pipe project.");
         Console.WriteLine("     restore - Install dependencies for project.");
         Console.WriteLine("     depends - List of dependencies.");
+        Console.WriteLine("     type    - Set type to your project. Can be 'app' or 'module'."); 
         Console.WriteLine("     addpkg  - Add package to recipe."); 
         Console.WriteLine("     rmpkg   - Remove package from recipe.");
         Console.WriteLine("     run     - Run main executable of project."); 

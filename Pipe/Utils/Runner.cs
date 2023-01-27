@@ -221,6 +221,12 @@ public class Runner
             Terminal.Error("Version of project not specified.");
             Terminal.Exit(4);
         }
+
+        if (Git.IsInstalled() && Git.IsGitRepository())
+        {
+            Terminal.Info("Current git branch: " + Git.GetBranchName());
+        }
+        
         Terminal.Done("All checks complete.");
         if (Config.RunBeforeBuild.Count != 0)
         {

@@ -1,41 +1,87 @@
 # Pipe
+
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6bf12d0bf98345a7baba35c0804a44ef)](https://www.codacy.com/gl/kostya-zero/pipe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/pipe&amp;utm_campaign=Badge_Grade)
 
-Pipe is a build system that allows you to easily build your Python applications. 
-It uses Nuitka as backend and making your compiled applications a lot faster. 
-Configuration file is a JSON format file and has a lot of options to use.
+Pipe is a build system for projects written in Python. They use Nuitka, which uses C compilers to compile applications and makes them fast and independent of Python runtime. Currently Pipe supported only on Linux. But, what Pipe really allows you to enchance?
+
+- Allows you to simplify the assembly of applications and modules.
+- The project configuration file has a JSON structure for easy editing.
+- Easy package management in the project.
+- Improves the performance of applications and modules thanks to Nuitka.
+
+## Navigation
+
+- [Pipe](#pipe)
+  - [Navigation](#navigation)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Configuration](#configuration)
 
 ## Requirements
-Important: 
-- `python` - to make your applications work.
-- `nuitka` - backend for pipe to build applications. Must be installed with `pip`.
 
-Optional:
-- `ccache` - required to allow Nuitka use ccache (`pipe_useccache`).
+- Python version 3.5 or higher.
+- C compiler with support of C11 or C++03 (`gcc`, `clang`).
+- Nuitka installed with `pip` (`pip install nuitka`).
+- .NET Runtime 7.x.
 
 ## Installation
-You can install Pipe for the x64 and ARM64 platforms.
-Let's install it step-by-step:
-- **1.** Go to releases section on [Official GitLab repository](https://gitlab.com/kostya-zero/pipe/-/releases) and select your preferred version.
-- **2.** Download a binary file that matches your architecture and system (`pipe-<system>-<version>-<arch>.zip`, example: `pipe-linux-1.0-arm64.zip`).
-- **3.** Place it where you want.
-- **4.** Make sure that .NET Runtime are installed on your system.
-- **5.** Finish.
+
+1. Download a binary build that matches your architecture from releases on [Official GitLab Repository](https://gitlab.com/kostya-zero/pipe/-/releases).
+    > The reason for moving releases was GitHub. When committing from our Gitea instance, all releases on GitHub disappeared, or rather they became drafts. There is no such thing like this on GitLab, and we decided to move all releases there.
+
+2. Extract binary from downloaded archive.
+3. Place it in `/usr/bin` if you installing it on Linux.
+4. If it returns `Permission denied` on startup, set to executable file permissions to execute.
+
+   ```shell
+    sudo chmod +x /usr/bin/pipe
+   ```
+  
+5. Pipe ready to use.
 
 ## Usage
-To start creating your application, generate a **Recipe** for Pipe.
-The wizard will ask you for the name of project and the name of main executable.
-The second one must match the real name of the main executable, otherwise Nuitka will not build it correctly and give an error.
-```shell
+
+You can use `help` argument to get help about available argument.
+
+```bash
+pipe help
+```
+
+## Configuration
+
+We need to generate recipe file to make pipe able to build project.
+
+```bash
 pipe proj init
 ```
-Now you have a file named `recipe.pipe` that contains information about your project.
-If you want to get explanation of each property in this configuration file, visit [CONFIGURATION.md](CONFIGURATION.md).
 
-To build an application, run the command below. 
-Nuitka will show you if there are errors in your project.
-```shell
-pipe build
+After dialog pipe will generate `recipe.pipe` file with build settings.
+
+```json
+{
+  "Project_Name": "pipe_project",
+  "Project_MainExecutable": "main.py",
+  "Project_Version": "1.0.0",
+  "Project_Type": "app",
+  "Pipe_NoConsole": false,
+  "Nuitka_LTO": 0,
+  "Nuitka_Jobs": 1,
+  "Pipe_RunBeforeBuild": [],
+  "Pipe_CustomShell": "",
+  "Options_OneFile": false,
+  "Options_Standalone": false,
+  "Options_FollowImports": true,
+  "Options_NoPyiFiles": true,
+  "Options_LowMemory": false,
+  "Options_ShowOnlyError": false,
+  "Depends_Packages": [],
+  "Depends_IncludeDirs": [],
+  "Depends_IgnorePackages": [
+    "email",
+    "http"
+  ]
+}
 ```
 
-If you want to get help about commands use `pipe help` to get list of available commands.
+> **NOTE**: `email` and `http` packages automatically adding when initializing recipe. Its not configurable at this moment.

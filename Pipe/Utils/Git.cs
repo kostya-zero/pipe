@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Pipe.Utils;
 
-public class Git
+public static class Git
 {
     public static bool IsInstalled()
     {

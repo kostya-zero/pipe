@@ -10,15 +10,15 @@ public class RecipeModel
     
     [JsonPropertyName("Project_Version")] public string ProjectVersion { get; set; } = "1.0.0";
 
-    [JsonPropertyName("Project_Description")] public string ProjectDescription = "An App built with Pipe!";
+    [JsonPropertyName("Project_Description")] public string ProjectDescription { get; set; } = "An App built with Pipe!";
 
     [JsonPropertyName("Project_Type")] public string ProjectType { get; set; } = "app";
     
     [JsonPropertyName("Pipe_NoConsole")] public bool DisableConsole { get; set; } 
     
-    [JsonPropertyName("Git_CheckoutBranch")] public string CheckoutBranch { get; set; } = "";
+    [JsonPropertyName("Git_CheckoutBranch")] public string CheckoutBranch { get; set; } = "main";
     
-    [JsonPropertyName("Nuitka_BackendCompiler")] public string BackendCompiler = "gcc";
+    [JsonPropertyName("Nuitka_BackendCompiler")] public string BackendCompiler { get; set; } = "gcc";
     
     [JsonPropertyName("Nuitka_LTO")] public int LTO { get; set; }
     

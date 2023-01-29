@@ -3,7 +3,7 @@ using Pipe.Utils;
 
 namespace Pipe;
 
-class Program
+static class Program
 {
     public static void Main(string[] args)
     {

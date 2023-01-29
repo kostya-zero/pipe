@@ -3,7 +3,7 @@ using Pipe.Models;
 
 namespace Pipe.Utils;
 
-public class RecipeManager
+public static class RecipeManager
 {
     public static bool CheckForRecipe()
     {

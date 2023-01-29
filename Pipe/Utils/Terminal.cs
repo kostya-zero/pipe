@@ -1,6 +1,6 @@
 namespace Pipe.Utils;
 
-public class Terminal
+public static class Terminal
 {
     public static void Error(string msg)
     {

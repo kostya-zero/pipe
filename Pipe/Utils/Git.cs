@@ -48,4 +48,25 @@ public class Git
         proc.WaitForExit();
         return name;
     }
+
+    public static bool Checkout(string branch)
+    {
+        Process proc = new Process();
+        proc.StartInfo = new ProcessStartInfo
+        {
+            FileName = "git",
+            Arguments = $"checkout {branch}",
+            RedirectStandardError = true,
+            RedirectStandardInput = true,
+            RedirectStandardOutput = true
+        };
+        proc.Start();
+        proc.WaitForExit();
+        if (proc.ExitCode != 0)
+        {
+            return false;
+        }
+
+        return true; 
+    }
 }

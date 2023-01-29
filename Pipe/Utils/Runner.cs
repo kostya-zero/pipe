@@ -87,7 +87,6 @@ public class Runner
         if (Config.IgnorePyiFiles) {command.Append(" --no-pyi-file");}
         
         if (Config.LowMemoryMode) {command.Append(" --low-memory");} 
-            Terminal.Warn("Using low memory compilation mode.");
 
         switch (Config.ProjectType.Trim())
         {
@@ -224,7 +223,14 @@ public class Runner
 
         if (Git.IsInstalled() && Git.IsGitRepository())
         {
-            Terminal.Info("Current git branch: " + Git.GetBranchName());
+            string currentBranch = Git.GetBranchName();
+            Terminal.Info("Current git branch: " + currentBranch);
+
+            if (Config.CheckoutBranch != currentBranch)
+            {
+                Terminal.Work($"Checking out '{Config.CheckoutBranch}' branch.");
+                Git.Checkout(Config.CheckoutBranch);
+            }
         }
         
         Terminal.Done("All checks complete.");

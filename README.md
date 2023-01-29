@@ -1,6 +1,11 @@
 # Pipe
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/6bf12d0bf98345a7baba35c0804a44ef)](https://www.codacy.com/gl/kostya-zero/pipe/dashboard?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=kostya-zero/pipe&amp;utm_campaign=Badge_Grade)
+![License](https://img.shields.io/badge/license-MIT-orange)
+![Works on my machine](https://img.shields.io/badge/works-on%20my%20machine-green)
+![Latest version](https://img.shields.io/gitlab/v/release/kostya-zero/Pipe)
+![Top language](https://img.shields.io/github/languages/top/kostya-zero/pipe)
+![Workflow Status](https://img.shields.io/github/actions/workflow/status/kostya-zero/pipe/dotnet.yml)
+![Codacy grade](https://img.shields.io/codacy/grade/6bf12d0bf98345a7baba35c0804a44ef)
 
 Pipe is a build system for projects written in Python. They use Nuitka, which uses C compilers to compile applications and makes them fast and independent of Python runtime. Currently Pipe supported only on Linux. But, what Pipe really allows you to enchance?
 

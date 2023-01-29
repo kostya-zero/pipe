@@ -17,22 +17,24 @@ public class Runner
     private void CheckPackages()
     {
         Terminal.Work("Checking for packages...");
-        int foundPackages = 0;
+        int notFoundPackages = 0;
         foreach (string package in Config.Packages)
         {
             if (Pip.Check(package))
             {
-                foundPackages++;
+                Terminal.Done($"Package '{package}' installed."); 
             }
             else
             {
-                Terminal.Info($"Package '{package}' not installed.");
+                Terminal.Error($"Package '{package}' not installed.");
+                notFoundPackages++;
             }
         }
 
-        if (foundPackages != Config.Packages.Count)
+        if (notFoundPackages != 0)
         {
-            Terminal.Error($"{(Config.Packages.Count - foundPackages).ToString()} packages not found!");
+            Terminal.Error($"{notFoundPackages.ToString()} packages not found!");
+            Terminal.Error("Build failed.");
             Terminal.Exit(4);
         }
         
@@ -41,22 +43,24 @@ public class Runner
     private void CheckDirectories()
     {
         Terminal.Work("Checking for directories...");
-        int foundDirs = 0;
+        int notFoundDirs = 0;
         foreach (string directory in Config.IncludeDirectories)
         {
             if (Directory.Exists(directory))
             {
-                foundDirs++;
+                Terminal.Done($"Directory '{directory}' found.");
             }
             else
             {
-                Terminal.Info($"Directory '{directory}' not found.");
+                Terminal.Error($"Directory '{directory}' not found.");
+                notFoundDirs++;
             }
         }
         
-        if (foundDirs != Config.IncludeDirectories.Count)
+        if (notFoundDirs != 0)
         {
-            Terminal.Error($"{(Config.IncludeDirectories.Count - foundDirs).ToString()} directories not found!");
+            Terminal.Error($"{notFoundDirs.ToString()} directories not found!");
+            Terminal.Error("Build failed.");
             Terminal.Exit(4);
         }
     }
@@ -197,6 +201,7 @@ public class Runner
 
     public void RunBuild()
     {
+        
         Terminal.Info($"Pipe Build System {VersionInfo.Version}");
         if (Config.ProjectDescription.Trim() != "")
         {
@@ -212,12 +217,14 @@ public class Runner
         if (!File.Exists(Config.MainExecutableName))
         {
             Terminal.Error($"Main file ({Config.MainExecutableName}) not found.");
+            Terminal.Error("Build failed.");
             Terminal.Exit(4);
         }
 
         if (Config.ProjectVersion.Trim() == "")
         {
             Terminal.Error("Version of project not specified.");
+            Terminal.Error("Build failed.");
             Terminal.Exit(4);
         }
 
@@ -256,6 +263,7 @@ public class Runner
                 if (commandProc.ExitCode != 0)
                 {
                     Terminal.Error($"Command '{s}' exited with bad code ({commandProc.ExitCode.ToString()}).");
+                    Terminal.Error("Build failed.");
                     Terminal.Exit(4);
                 }
             }
@@ -276,6 +284,7 @@ public class Runner
         if (proc.ExitCode != 0)
         {
             Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()}).");
+            Terminal.Error("Build failed.");
             Terminal.Exit(4);
         }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");

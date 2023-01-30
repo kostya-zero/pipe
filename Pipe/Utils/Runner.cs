@@ -22,7 +22,7 @@ public class Runner
         {
             if (Pip.Check(package))
             {
-                Terminal.Done($"Package '{package}' installed."); 
+                Terminal.Good($"Package '{package}' installed."); 
             }
             else
             {
@@ -48,7 +48,7 @@ public class Runner
         {
             if (Directory.Exists(directory))
             {
-                Terminal.Done($"Directory '{directory}' found.");
+                Terminal.Good($"Directory '{directory}' found.");
             }
             else
             {

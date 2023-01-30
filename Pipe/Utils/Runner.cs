@@ -290,6 +290,7 @@ public class Runner
             Terminal.Exit(4);
         }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");
-        Terminal.Done("Build finished.");
+        string finalName = Path.GetFileNameWithoutExtension(Config.MainExecutableName) + ".bin";
+        Terminal.Done($"Build finished. Executable will be saved as '{finalName}'.");
     }
 }

@@ -237,7 +237,7 @@ public class Runner
 
             if (Config.CheckoutBranch != currentBranch)
             {
-                Terminal.Work($"Checking out '{Config.CheckoutBranch}' branch.");
+                Terminal.Work($"Checkout '{Config.CheckoutBranch}' branch...");
                 Git.Checkout(Config.CheckoutBranch);
             }
         }

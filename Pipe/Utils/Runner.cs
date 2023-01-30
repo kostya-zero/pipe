@@ -101,6 +101,7 @@ public class Runner
                 break;
             default:
                 Terminal.Error($"Unknown project type: {Config.ProjectType}.");
+                Terminal.Error("Build failed.");
                 Terminal.Exit(4);
                 break;
     }
@@ -187,6 +188,7 @@ public class Runner
                 break;
             case "":
                 Terminal.Warn("No compiler specified!");
+                Terminal.Error("Build failed.");
                 Terminal.Exit(4);
                 break;
             default:

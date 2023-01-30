@@ -48,6 +48,7 @@ public class InfoActions
         if (File.Exists("/usr/bin/gcc")) { requirements.FoundGcc = true; }
         if (File.Exists("/usr/bin/clang") &&
             File.Exists("/usr/bin/clang++")) { requirements.FoundClang = true; }
+        if (File.Exists("/usr/bin/git")) { requirements.FoundGit = true; }
 
     Console.WriteLine("Investigation completed. Results:");
         Console.WriteLine("Python: " + (requirements.FoundPython ? "Found" : "Not found"));
@@ -55,7 +56,9 @@ public class InfoActions
         Console.WriteLine("GCC: " + (requirements.FoundGcc ? "Found" : "Not found") + "\n");
         Console.WriteLine("Optional:");
         Console.WriteLine("Clang: " + (requirements.FoundClang ? "Found" : "Not found"));
-        Console.WriteLine("     Clang are needed to build application by using clang as backend compiler\n");
+        Console.WriteLine("     Clang are needed to build application by using clang as backend compiler");
+        Console.WriteLine("Git: " + (requirements.FoundGit ? "Found" : "Not found"));
+        Console.WriteLine("     Version control system needed for some projects.");
     }
 
     private void Env()

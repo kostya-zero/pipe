@@ -7,7 +7,7 @@ public static class HelpMessages
     public static void HeaderMessage()
     {
         Console.WriteLine($"Pipe v{VersionInfo.Version} // RC: {VersionInfo.ReleaseCandidate}");
-        Console.WriteLine("usage: pipe <command> <positional>\n");
+        Console.WriteLine("usage: pipe [command] [argument, ...]\n");
     }
 
     public static void HelpProgram()

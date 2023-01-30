@@ -9,7 +9,7 @@ static class Program
     {
         if (args.Length == 0)
         {
-            Console.WriteLine("Nothing to do.");
+            Console.WriteLine("Nothing to do. Add `help` argument to get help list.");
             Terminal.Exit(1);
         }
 
@@ -18,7 +18,7 @@ static class Program
             case "build":
                 if (!RecipeManager.CheckForRecipe())
                 {
-                    Terminal.Error("Config not found!");
+                    Terminal.Error("Recipe not found!");
                     Terminal.Exit(1); 
                 }
                 Runner runner = new Runner();

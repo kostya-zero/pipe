@@ -14,6 +14,12 @@ public class Runner
         Config = configModel;
     }
 
+    private void FailBuild()
+    {
+        Terminal.Error("Build failed.");
+        Terminal.Exit(4);
+    }
+
     private void CheckPackages()
     {
         Terminal.Work("Checking for packages...");
@@ -34,8 +40,7 @@ public class Runner
         if (notFoundPackages != 0)
         {
             Terminal.Error($"{notFoundPackages.ToString()} packages not found!");
-            Terminal.Error("Build failed.");
-            Terminal.Exit(4);
+            FailBuild();
         }
         
     }
@@ -60,8 +65,30 @@ public class Runner
         if (notFoundDirs != 0)
         {
             Terminal.Error($"{notFoundDirs.ToString()} directories not found!");
-            Terminal.Error("Build failed.");
-            Terminal.Exit(4);
+            FailBuild();
+        }
+    }
+
+    private void CheckTools()
+    {
+        int notFoundTools = 0;
+        foreach (string tool in Config.RequiredTools)
+        {
+            if (File.Exists(tool))
+            {
+                Terminal.Good($"{tool} found.");
+            }
+            else
+            {
+                Terminal.Error($"{tool} not found!");
+                notFoundTools++;
+            }
+        }
+
+        if (notFoundTools > 0)
+        {
+            Terminal.Error($"{notFoundTools.ToString()} tools not found.");
+            FailBuild();
         }
     }
 
@@ -89,8 +116,6 @@ public class Runner
         if (Config.StandAlone) {command.Append(" --standalone");}
         if (Config.FollowImports) {command.Append(" --follow-imports");}
         if (Config.IgnorePyiFiles) {command.Append(" --no-pyi-file");}
-        
-        if (Config.LowMemoryMode) {command.Append(" --low-memory");} 
 
         switch (Config.ProjectType.Trim())
         {
@@ -101,8 +126,7 @@ public class Runner
                 break;
             default:
                 Terminal.Error($"Unknown project type: {Config.ProjectType}.");
-                Terminal.Error("Build failed.");
-                Terminal.Exit(4);
+                FailBuild();
                 break;
     }
         if (Config.Jobs != 0) {command.Append($" --jobs={Config.Jobs.ToString()}");}
@@ -150,12 +174,6 @@ public class Runner
                     Terminal.Error("'/usr/bin/g++' not found!");
                     binaryNotFound = true;
                 }
-
-                if (binaryNotFound)
-                {
-                    Terminal.Error("Cannot continue because some compilers binaries not found.");
-                    Terminal.Exit(4);
-                }
                 break;
             case "clang":
                 Terminal.Work("Searching for Clang binaries...");
@@ -178,22 +196,21 @@ public class Runner
                     Terminal.Error("'/usr/bin/clang++' not found!");
                     binaryNotFound = true;
                 }
-
-                if (binaryNotFound)
-                {
-                    Terminal.Error("Cannot continue because some compilers binaries not found.");
-                    Terminal.Exit(4);
-                }
                 command.Append(" --clang");
                 break;
             case "":
                 Terminal.Warn("No compiler specified!");
-                Terminal.Error("Build failed.");
-                Terminal.Exit(4);
+                FailBuild();
                 break;
             default:
                 Terminal.Error($"Unknown compiler: {Config.BackendCompiler}. Using defaults.");
                 break;
+        }
+        
+        if (binaryNotFound)
+        {
+            Terminal.Error("Cannot continue because some compilers binaries not found.");
+            FailBuild();
         }
 
         command.Append(" " + Config.MainExecutableName);
@@ -203,14 +220,11 @@ public class Runner
 
     public void RunBuild()
     {
-        
         Terminal.Info($"Pipe Build System {VersionInfo.Version}");
-        if (Config.ProjectDescription.Trim() != "")
-        {
-            Terminal.Info($"Building {Config.ProjectName} - {Config.ProjectDescription}");
-        }
-        else { Terminal.Info($"Building {Config.ProjectName}"); }
-        
+        Terminal.Info(Config.ProjectDescription.Trim() != ""
+            ? $"Building {Config.ProjectName} - {Config.ProjectDescription}"
+            : $"Building {Config.ProjectName}");
+
         Terminal.Info($"Configuration: {Config.ProjectType}");
         
         if (Config.Packages.Count != 0) {CheckPackages();}
@@ -219,15 +233,19 @@ public class Runner
         if (!File.Exists(Config.MainExecutableName))
         {
             Terminal.Error($"Main file ({Config.MainExecutableName}) not found.");
-            Terminal.Error("Build failed.");
-            Terminal.Exit(4);
+            FailBuild();
         }
 
         if (Config.ProjectVersion.Trim() == "")
         {
             Terminal.Error("Version of project not specified.");
-            Terminal.Error("Build failed.");
-            Terminal.Exit(4);
+            FailBuild();
+        }
+
+        if (Config.RequiredTools.Count != 0)
+        {
+            Terminal.Info("Checking for required tools...");
+            CheckTools();
         }
 
         if (Git.IsInstalled() && Git.IsGitRepository())
@@ -265,8 +283,7 @@ public class Runner
                 if (commandProc.ExitCode != 0)
                 {
                     Terminal.Error($"Command '{s}' exited with bad code ({commandProc.ExitCode.ToString()}).");
-                    Terminal.Error("Build failed.");
-                    Terminal.Exit(4);
+                    FailBuild();
                 }
             }
         }
@@ -286,8 +303,7 @@ public class Runner
         if (proc.ExitCode != 0)
         {
             Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()}).");
-            Terminal.Error("Build failed.");
-            Terminal.Exit(4);
+            FailBuild();
         }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");
         string finalName = Path.GetFileNameWithoutExtension(Config.MainExecutableName) + ".bin";

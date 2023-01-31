@@ -26,7 +26,9 @@ public class RecipeModel
 
     [JsonPropertyName("Pipe_CustomShell")] public string CustomShell { get; set; } = "";
     
-    [JsonPropertyName("Pipe_NoConsole")] public bool DisableConsole { get; set; } 
+    [JsonPropertyName("Pipe_NoConsole")] public bool DisableConsole { get; set; }
+
+    [JsonPropertyName("Pipe_RequiredTools")] public List<string> RequiredTools { get; set; } = new List<string>();
     
     [JsonPropertyName("Options_OneFile")] public bool OneFile { get; set; }
     
@@ -35,8 +37,6 @@ public class RecipeModel
     [JsonPropertyName("Options_FollowImports")] public bool FollowImports { get; set; } = true;
     
     [JsonPropertyName("Options_NoPyiFiles")] public bool IgnorePyiFiles { get; set; } = true;
-    
-    [JsonPropertyName("Options_LowMemory")] public bool LowMemoryMode { get; set; }
     
     [JsonPropertyName("Options_ShowOnlyError")] public bool ShowOnlyErrors { get; set; }
 

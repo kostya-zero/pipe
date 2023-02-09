@@ -92,6 +92,18 @@ public class Runner
         }
     }
 
+    private void CheckConflicts()
+    {
+        foreach (string package in Config.Packages)
+        {
+            if (Config.IgnorePkgs.Contains(package))
+            {
+                Terminal.Error($"Pipe confused, because {package} package are placed in used and ignored.");
+                FailBuild();
+            }
+        }
+    }
+
     private string GenerateCommand()
     {
         StringBuilder command = new StringBuilder("-m nuitka");
@@ -149,7 +161,6 @@ public class Runner
                 break;
         }
 
-        if (Config.DisableConsole) {command.Append(" --disable-console");}
         bool binaryNotFound = false;
         switch (Config.BackendCompiler.Trim())
         {
@@ -226,8 +237,12 @@ public class Runner
             : $"Building {Config.ProjectName}");
 
         Terminal.Info($"Configuration: {Config.ProjectType}");
-        
-        if (Config.Packages.Count != 0) {CheckPackages();}
+
+        if (Config.Packages.Count != 0)
+        {
+            CheckPackages();
+            CheckConflicts();
+        }
         if (Config.IncludeDirectories.Count != 0) {CheckDirectories();}
         
         if (!File.Exists(Config.MainExecutableName))
@@ -295,7 +310,9 @@ public class Runner
         {
             FileName = "python",
             Arguments = command,
-            CreateNoWindow = false
+            CreateNoWindow = false,
+            RedirectStandardInput = Config.ShowOnlyErrors,
+            RedirectStandardOutput = Config.ShowOnlyErrors 
         };
         Terminal.Work("Running nuitka...");
         proc.Start();

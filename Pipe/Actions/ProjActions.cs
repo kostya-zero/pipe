@@ -22,6 +22,9 @@ public class ProjActions
             case "restore":
                 Restore();
                 break;
+            case "depends":
+                Depends();
+                break;
             case "addpkg":
                 if (args.Length == 2)
                 {
@@ -65,7 +68,7 @@ public class ProjActions
     {
         if (RecipeManager.CheckForRecipe())
         {
-            Terminal.Error("Config already exists!");
+            Terminal.Error("Recipe already exists!");
             Terminal.Exit(1);
         }
         string name = Terminal.Ask("Enter name of your project.", "pipe_project");
@@ -192,6 +195,27 @@ public class ProjActions
         }
         RecipeManager.UpdateRecipe(recipe);
         Terminal.Done("New project type applied.");
+    }
+
+    private void Depends()
+    {
+        if (!RecipeManager.CheckForRecipe())
+        {
+            Terminal.Error("Recipe not found!");
+            Terminal.Exit(1);
+        }
+
+        var config = RecipeManager.GetRecipe();
+        if (config.Packages.Count == 0)
+        {
+            Console.WriteLine("No packages added to this project.");
+            Terminal.Exit(0);
+        }
+
+        foreach (string package in config.Packages)
+        {
+            Console.WriteLine(package);
+        }
     }
 
     private void Run()

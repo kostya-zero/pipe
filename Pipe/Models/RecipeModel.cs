@@ -25,8 +25,6 @@ public class RecipeModel
     [JsonPropertyName("Pipe_RunBeforeBuild")] public List<string> RunBeforeBuild { get; set; } = new List<string>();
 
     [JsonPropertyName("Pipe_CustomShell")] public string CustomShell { get; set; } = "";
-    
-    [JsonPropertyName("Pipe_NoConsole")] public bool DisableConsole { get; set; }
 
     [JsonPropertyName("Pipe_RequiredTools")] public List<string> RequiredTools { get; set; } = new List<string>();
     

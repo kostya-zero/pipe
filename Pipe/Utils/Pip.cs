@@ -7,78 +7,60 @@ public class Pip
     public bool Check(string package)
     {
         Process proc = new Process();
-        bool result = false;
-        ProcessStartInfo procInfo = new ProcessStartInfo
+        proc.StartInfo = new ProcessStartInfo
         {
-            FileName = "/usr/bin/pip",
+            FileName = "pip",
             Arguments = $"show {package}",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             RedirectStandardInput = true
         };
-        proc.StartInfo = procInfo;
         proc.Start();
         proc.WaitForExit();
 
         if (proc.ExitCode == 0)
         {
-            result = true;
+            return true;
         }
 
-        return result;
+        return false;
     }
     
-    public bool Install(string package, bool noOutput = false)
+    public bool Install(string package)
     {
         Process proc = new Process();
-        bool result = false;
-        ProcessStartInfo procInfo = new ProcessStartInfo
+        proc.StartInfo = new ProcessStartInfo
         {
-            FileName = "/usr/bin/pip",
+            FileName = "pip",
             Arguments = $"install {package}"
         };
-
-        if (noOutput)
-        {
-            procInfo.RedirectStandardOutput = true;
-            procInfo.RedirectStandardError = true;
-        }
-        proc.StartInfo = procInfo;
         proc.Start();
         proc.WaitForExit();
 
         if (proc.ExitCode == 0)
         {
-            result = true;
+            return true;
         }
 
-        return result;
+        return false;
     }
     
-    public bool Update(string package, bool noOutput = false)
+    public bool Update(string package)
     {
         Process proc = new Process();
-        bool result = false;
-        ProcessStartInfo procInfo = new ProcessStartInfo
+        proc.StartInfo = new ProcessStartInfo
         {
-            FileName = "/usr/bin/pip",
+            FileName = "pip",
             Arguments = $"install -U {package}"
         };
-
-        if (noOutput)
-        {
-            procInfo.RedirectStandardOutput = true;
-            procInfo.RedirectStandardError = true;
-        }
-        proc.StartInfo = procInfo;
         proc.Start();
         proc.WaitForExit();
-
+        
         if (proc.ExitCode == 0)
         {
-            result = true;
+            return true;
         }
 
-        return result;
+        return false;
     }
 }

@@ -45,6 +45,15 @@ public class ProjActions
                 
                 RmPkg(args[2]);  
                 break;
+            
+            case "update":
+                if (args.Length == 2)
+                {
+                    Console.WriteLine("Nothing to remove from project! Enter a package name after 'rmpkg'.");
+                    Console.WriteLine("Example: pipe proj rmpkg numpy");
+                    Terminal.Exit(1);
+                } 
+                break;
             case "type":
                 if (args.Length == 2)
                 {
@@ -73,13 +82,19 @@ public class ProjActions
         }
         string name = Terminal.Ask("Enter name of your project.", "pipe_project");
         string mainExec = Terminal.Ask("Enter name of main executable file.", "main.py");
-        Terminal.Work("Generating config model...");
         RecipeModel config = new RecipeModel
         {
             ProjectName = name,
             MainExecutableName = mainExec
         };
         RecipeManager.MakeRecipe(config);
+        if (Git.IsInstalled() && !Git.IsGitRepository())
+        {
+            if (Git.Init())
+            {
+                Terminal.Info("Git repository has been initialized.");
+            }
+        }
         Console.WriteLine("Configuration file for your project has been generated!");
         Console.WriteLine("It will be placed with name recipe.pipe.");
     }
@@ -143,7 +158,11 @@ public class ProjActions
                     Console.WriteLine("OK, adding without installation.");
                     break;
                 default:
-                    Console.WriteLine("OK, adding without installation.");
+                    if (!pip.Install(pkg))
+                    {
+                        Terminal.Error("Got error while trying to install package.");
+                        Terminal.Exit(1);
+                    }
                     break;
             }
         }

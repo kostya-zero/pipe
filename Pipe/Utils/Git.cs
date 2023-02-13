@@ -69,4 +69,25 @@ public static class Git
 
         return true; 
     }
+
+    public static bool Init()
+    {
+        Process proc = new Process();
+        proc.StartInfo = new ProcessStartInfo
+        {
+            FileName = "git",
+            Arguments = "init",
+            RedirectStandardError = true,
+            RedirectStandardInput = true,
+            RedirectStandardOutput = true
+        };
+        proc.Start();
+        proc.WaitForExit();
+        if (proc.ExitCode != 0)
+        {
+            return false;
+        }
+
+        return true;  
+    }
 }

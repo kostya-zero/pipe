@@ -23,11 +23,12 @@ public static class HelpMessages
         Console.WriteLine("     version - Shows pipe version.");
         Console.WriteLine("     req     - Matching requirements with current environment.\n");
         Console.WriteLine("Proj arguments:");
-        Console.WriteLine("     init - Initialize a Pipe project.");
+        Console.WriteLine("     init    - Initialize a Pipe project.");
         Console.WriteLine("     restore - Install dependencies for project.");
         Console.WriteLine("     depends - List of dependencies.");
         Console.WriteLine("     type    - Set type to your project. Can be 'app' or 'module'."); 
-        Console.WriteLine("     addpkg  - Add package to recipe."); 
+        Console.WriteLine("     addpkg  - Add package to recipe.");
+        Console.WriteLine("     update  - Update each package in project."); 
         Console.WriteLine("     rmpkg   - Remove package from recipe.");
         Console.WriteLine("     run     - Run main executable of project."); 
     }

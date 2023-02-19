@@ -40,6 +40,8 @@ public class RecipeModel
 
     [JsonPropertyName("Depends_Packages")] public List<string> Packages { get; set; } = new List<string>();
     
+    [JsonPropertyName("Depends_UseRequirements")] public bool UseRequirements { get; set; } 
+    
     [JsonPropertyName("Depends_IncludeDirs")] public List<string> IncludeDirectories { get; set; } = new List<string>();
     
     [JsonPropertyName("Depends_IgnorePackages")] public List<string> IgnorePkgs { get; set; } = new List<string>(new [] { "email", "http"});

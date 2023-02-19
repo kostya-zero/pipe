@@ -143,6 +143,14 @@ public class Runner
     }
         if (Config.Jobs != 0) {command.Append($" --jobs={Config.Jobs.ToString()}");}
 
+        if (Config.Jobs == 0)
+        {
+            Terminal.Work("Detecting threads ('Nutika_Jobs': 0)...");
+            int count = HostHelper.GetThreadsCount();
+            Terminal.Done($"Found {count.ToString()} threads.");
+            command.Append($" --jobs={count.ToString()}");
+        }
+
         switch (Config.LTO)
         {
             case 0:
@@ -187,6 +195,7 @@ public class Runner
                 }
                 break;
             case "clang":
+                Terminal.Warn("Using clang as backend!");
                 Terminal.Work("Searching for Clang binaries...");
                 if (File.Exists("/usr/bin/clang"))
                 {

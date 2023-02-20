@@ -250,7 +250,11 @@ public class Runner
         if (Config.UseRequirements)
         {
             Terminal.Warn("Using requirements.txt file. Pipe are not tracking this packages.");
-            Pip.InstallFromRequirements();
+            if (!Pip.InstallFromRequirements())
+            {
+                Terminal.Error("Pip got bad exit code.");
+                FailBuild();
+            }
         }
         else
         {

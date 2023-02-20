@@ -63,4 +63,26 @@ public class Pip
 
         return false;
     }
+
+    public bool InstallFromRequirements()
+    {
+        Process proc = new Process();
+        proc.StartInfo = new ProcessStartInfo
+        {
+            FileName = "pip",
+            Arguments = "install -r requirements.txt",
+            CreateNoWindow = true,
+            UseShellExecute = false
+        };
+        proc.Start();
+        proc.WaitForExit();
+
+        if (proc.ExitCode == 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }

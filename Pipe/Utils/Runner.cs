@@ -164,7 +164,7 @@ public class Runner
                 Terminal.Warn("LTO set to auto.");
                 break;
             default:
-                Terminal.Warn($"Option 'pipe_lto' has value that out of range ({Config.LTO.ToString()}). " +
+                Terminal.Warn($"Option 'Nuitka_LTO' has value '{Config.LTO.ToString()}' that out of range. " +
                               "Ignoring.");
                 break;
         }
@@ -247,11 +247,20 @@ public class Runner
 
         Terminal.Info($"Configuration: {Config.ProjectType}");
 
-        if (Config.Packages.Count != 0)
+        if (Config.UseRequirements)
         {
-            CheckPackages();
-            CheckConflicts();
+            Terminal.Warn("Using requirements.txt file. Pipe are not tracking this packages.");
+            Pip.InstallFromRequirements();
         }
+        else
+        {
+            if (Config.Packages.Count != 0)
+            {
+                CheckPackages();
+                CheckConflicts();
+            } 
+        }
+        
         if (Config.IncludeDirectories.Count != 0) {CheckDirectories();}
         
         if (!File.Exists(Config.MainExecutableName))

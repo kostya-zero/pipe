@@ -17,7 +17,7 @@ public class Runner
     private void FailBuild()
     {
         Terminal.Error("Build failed.");
-        Terminal.Exit(4);
+        Terminal.Exit(1);
     }
 
     private void CheckPackages()
@@ -246,9 +246,22 @@ public class Runner
             : $"Building {Config.ProjectName}");
 
         Terminal.Info($"Configuration: {Config.ProjectType}");
+        
+        Terminal.Work("Searching for Python installation...");
+        if (!File.Exists("/usr/bin/python") || !File.Exists("/usr/bin/python3"))
+        {
+            Terminal.Error("Python not found!");
+            FailBuild();
+        }
+        Terminal.Good("Python found.");
 
         if (Config.UseRequirements)
         {
+            if (!File.Exists("requirements.txt"))
+            {
+                Terminal.Error("requirements.txt are not exists!");
+                FailBuild();
+            }
             Terminal.Warn("Using requirements.txt file. Pipe are not tracking this packages.");
             if (!Pip.InstallFromRequirements())
             {
@@ -300,7 +313,6 @@ public class Runner
         Terminal.Done("All checks complete.");
         if (Config.RunBeforeBuild.Count != 0)
         {
-            string shell = Config.CustomShell != "" ? Config.CustomShell : "bash";
             
             Terminal.Work("Running commands before build...");
             foreach (string s in Config.RunBeforeBuild)
@@ -308,7 +320,7 @@ public class Runner
                 Process commandProc = new Process();
                 ProcessStartInfo commandProcInfo = new ProcessStartInfo
                 {
-                    FileName = shell,
+                    FileName = "bash",
                     Arguments = s,
                     RedirectStandardInput = Config.ShowOnlyErrors,
                     RedirectStandardOutput = Config.ShowOnlyErrors

@@ -1,3 +1,4 @@
+using System.Data;
 using System.Diagnostics;
 using Pipe.Models;
 using Pipe.Utils;
@@ -224,6 +225,20 @@ public class ProjActions
         }
 
         var config = RecipeManager.GetRecipe();
+
+        if (config.UseRequirements)
+        {
+            if (!File.Exists("requirements.txt"))
+            {
+                Terminal.Error("requirements.txt are not exists!"); 
+                Terminal.Exit(1);
+            }
+            
+            Terminal.Warn("Output is a content of requirements.txt file.");
+            string content = File.ReadAllText("requirements.txt");
+            Console.WriteLine(content);
+        }
+        
         if (config.Packages.Count == 0)
         {
             Console.WriteLine("No packages added to this project.");

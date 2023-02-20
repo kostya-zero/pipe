@@ -76,7 +76,7 @@ public static class Git
         proc.StartInfo = new ProcessStartInfo
         {
             FileName = "git",
-            Arguments = "init",
+            Arguments = "init --initial-branch=main",
             RedirectStandardError = true,
             RedirectStandardInput = true,
             RedirectStandardOutput = true

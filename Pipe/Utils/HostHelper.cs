@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace Pipe.Utils;
 
-public class HostHelper
+public static class HostHelper
 {
     public static int GetThreadsCount()
     {

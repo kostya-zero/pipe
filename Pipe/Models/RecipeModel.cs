@@ -14,7 +14,7 @@ public class RecipeModel
 
     [JsonPropertyName("Project_Type")] public string ProjectType { get; set; } = "app";
     
-    [JsonPropertyName("Git_CheckoutBranch")] public string CheckoutBranch { get; set; } = "main";
+    [JsonPropertyName("Git_CheckoutBranch")] public string CheckoutBranch { get; set; } = "";
     
     [JsonPropertyName("Nuitka_BackendCompiler")] public string BackendCompiler { get; set; } = "gcc";
     

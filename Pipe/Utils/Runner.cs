@@ -303,7 +303,7 @@ public class Runner
             string currentBranch = Git.GetBranchName();
             Terminal.Info("Current git branch: " + currentBranch);
 
-            if (Config.CheckoutBranch != currentBranch)
+            if (Config.CheckoutBranch != currentBranch && Config.CheckoutBranch.Trim() != "")
             {
                 Terminal.Work($"Checkout '{Config.CheckoutBranch}' branch...");
                 Git.Checkout(Config.CheckoutBranch);

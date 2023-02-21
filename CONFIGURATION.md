@@ -3,19 +3,19 @@
 - `Project_MainExecutable` - main executable file of your project. After build your application/module will have the same name as main file without `.py`.
 - `Project_Version` - version of the project. After build executable will have this version label.
 - `Project_Description` - it will show what is your application/module.
-- `Pipe_BuildModule` - set `true` if you want to build a module. Leave it with `false` to build an application.
-- `Pipe_NoConsole` - set `true` if you want to disable showing terminal. Leave `false` if you want to enable it.
+- `Project_Type` - type of your project. Can be `app` or `module`. By default its `app`.
+- `Git_CheckoutBranch` - checkout branch if project is a git repository. If its empty pipe will ignore it.
 - `Nuitka_BackendCompiler` - there is 2 available options - `gcc` and `clang`. By default, Nuitka using GCC. Make sure that you have compiler you chosen.
 - `Nuitka_LTO` - set to `1` to enable Link Time Optimization. Set `2` to enable it automatically. Set `0` to disable LTO.
 - `Nuitka_Jobs` - number of CPUs to use (execute `nproc` to get number of it).
 - `Pipe_RunBeforeBuild` - commands to run before building application.
-- `Pipe_CustomShell` - shell to use with `Pipe_RunBeforeBuild`.
+- `Pipe_RequiredTools` - list of programs that's need for build.
 - `Options_OneFile` - build in a single executable file.
 - `Options_Standalone` - make it possible to run without runtime.
 - `Options_FollowImports` - Add imported packages in other `.py` files.
 - `Options_NoPyiFiles` - skipping stub files.
-- `Options_LowMemory` - use this option if you have 4 GB of RAM or less.
 - `Options_ShowOnlyErrors` - redirect all output and shows only messages that was send with `stderr`.
 - `Depends_Packages` - packages to use.
+- `Depends_UseRequirements` - call pip to install dependencies described in `requirements.txt` file.
 - `Depends_IncludeDirs` - included directories of your project.
 - `Depends_IgnorePackages` - ignore packages and dont include it in final executable.

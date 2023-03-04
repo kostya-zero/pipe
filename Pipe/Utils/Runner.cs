@@ -98,7 +98,7 @@ public class Runner
         {
             if (Config.IgnorePkgs.Contains(package))
             {
-                Terminal.Error($"Pipe confused, because {package} package are placed in used and ignored.");
+                Terminal.Error($"Pipe confused, because {package} package are used and ignored at the same time.");
                 FailBuild();
             }
         }
@@ -174,46 +174,16 @@ public class Runner
         {
             case "gcc":
                 Terminal.Work("Searching for GCC binaries...");
-                if (File.Exists("/usr/bin/gcc"))
+                if (!ToolsManager.FindGcc())
                 {
-                    Terminal.Done("'/usr/bin/gcc' found.");
-                }
-                else
-                {
-                    Terminal.Error("'/usr/bin/gcc' not found!");
-                    binaryNotFound = true;
-                }
-                
-                if (File.Exists("/usr/bin/g++"))
-                {
-                    Terminal.Done("'/usr/bin/g++' found.");
-                }
-                else
-                {
-                    Terminal.Error("'/usr/bin/g++' not found!");
                     binaryNotFound = true;
                 }
                 break;
             case "clang":
                 Terminal.Warn("Using clang as backend!");
                 Terminal.Work("Searching for Clang binaries...");
-                if (File.Exists("/usr/bin/clang"))
+                if (!ToolsManager.FindClang())
                 {
-                    Terminal.Done("'/usr/bin/clang' found.");
-                }
-                else
-                {
-                    Terminal.Error("'/usr/bin/clang' not found!");
-                    binaryNotFound = true;
-                }
-                
-                if (File.Exists("/usr/bin/clang++"))
-                {
-                    Terminal.Done("'/usr/bin/clang++' found.");
-                }
-                else
-                {
-                    Terminal.Error("'/usr/bin/clang++' not found!");
                     binaryNotFound = true;
                 }
                 command.Append(" --clang");
@@ -356,8 +326,13 @@ public class Runner
             Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()}).");
             FailBuild();
         }
+        string finalName = Path.GetFileNameWithoutExtension(Config.MainExecutableName);
+        if (Config.ClearBuild) 
+        {
+            Terminal.Work("Removing build directory...");
+            Directory.Delete(finalName + ".build");
+        }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");
-        string finalName = Path.GetFileNameWithoutExtension(Config.MainExecutableName) + ".bin";
-        Terminal.Done($"Build finished. Executable will be saved as '{finalName}'.");
+        Terminal.Done($"Build finished. Executable will be saved as '{finalName + ".bin"}'.");
     }
 }

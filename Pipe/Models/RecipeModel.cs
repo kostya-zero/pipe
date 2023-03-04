@@ -25,6 +25,8 @@ public class RecipeModel
     [JsonPropertyName("Pipe_RunBeforeBuild")] public List<string> RunBeforeBuild { get; set; } = new List<string>();
 
     [JsonPropertyName("Pipe_RequiredTools")] public List<string> RequiredTools { get; set; } = new List<string>();
+
+    [JsonPropertyName("Pipe_ClearBuild")] public bool ClearBuild { get; set; }
     
     [JsonPropertyName("Options_OneFile")] public bool OneFile { get; set; }
     

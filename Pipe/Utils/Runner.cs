@@ -22,7 +22,7 @@ public class Runner
 
     private void CheckPackages()
     {
-        Terminal.Work("Checking for packages...");
+        Terminal.Build("Checking for packages...");
         int notFoundPackages = 0;
         foreach (string package in Config.Packages)
         {
@@ -47,7 +47,7 @@ public class Runner
 
     private void CheckDirectories()
     {
-        Terminal.Work("Checking for directories...");
+        Terminal.Build("Checking for directories...");
         int notFoundDirs = 0;
         foreach (string directory in Config.IncludeDirectories)
         {
@@ -145,7 +145,7 @@ public class Runner
 
         if (Config.Jobs == 0)
         {
-            Terminal.Work("Detecting threads ('Nutika_Jobs': 0)...");
+            Terminal.Build("Detecting threads ('Nutika_Jobs': 0)...");
             int count = HostHelper.GetThreadsCount();
             Terminal.Done($"Found {count.ToString()} threads.");
             command.Append($" --jobs={count.ToString()}");
@@ -173,7 +173,7 @@ public class Runner
         switch (Config.BackendCompiler.Trim())
         {
             case "gcc":
-                Terminal.Work("Searching for GCC binaries...");
+                Terminal.Build("Searching for GCC binaries...");
                 if (!ToolsManager.FindGcc())
                 {
                     binaryNotFound = true;
@@ -181,7 +181,7 @@ public class Runner
                 break;
             case "clang":
                 Terminal.Warn("Using clang as backend!");
-                Terminal.Work("Searching for Clang binaries...");
+                Terminal.Build("Searching for Clang binaries...");
                 if (!ToolsManager.FindClang())
                 {
                     binaryNotFound = true;
@@ -217,7 +217,7 @@ public class Runner
 
         Terminal.Info($"Configuration: {Config.ProjectType}");
         
-        Terminal.Work("Searching for Python installation...");
+        Terminal.Build("Searching for Python installation...");
         if (!File.Exists("/usr/bin/python") || !File.Exists("/usr/bin/python3"))
         {
             Terminal.Error("Python not found!");
@@ -275,7 +275,7 @@ public class Runner
 
             if (Config.CheckoutBranch != currentBranch && Config.CheckoutBranch.Trim() != "")
             {
-                Terminal.Work($"Checkout '{Config.CheckoutBranch}' branch...");
+                Terminal.Build($"Checkout '{Config.CheckoutBranch}' branch...");
                 Git.Checkout(Config.CheckoutBranch);
             }
         }
@@ -284,7 +284,7 @@ public class Runner
         if (Config.RunBeforeBuild.Count != 0)
         {
             
-            Terminal.Work("Running commands before build...");
+            Terminal.Build("Running commands before build...");
             foreach (string s in Config.RunBeforeBuild)
             {
                 Process commandProc = new Process();
@@ -296,7 +296,7 @@ public class Runner
                     RedirectStandardOutput = Config.ShowOnlyErrors
                 };
                 commandProc.StartInfo = commandProcInfo;
-                Terminal.Work(s);
+                Terminal.Build(s);
                 commandProc.Start();
                 commandProc.WaitForExit();
                 if (commandProc.ExitCode != 0)
@@ -306,9 +306,9 @@ public class Runner
                 }
             }
         }
-        Terminal.Work("Making build arguments tree...");
+        Terminal.Build("Making build arguments tree...");
         string command = GenerateCommand();
-        Terminal.Work("Preparing to run...");
+        Terminal.Build("Preparing to run...");
         Process proc = new Process();
         proc.StartInfo = new ProcessStartInfo
         {
@@ -318,7 +318,7 @@ public class Runner
             RedirectStandardInput = Config.ShowOnlyErrors,
             RedirectStandardOutput = Config.ShowOnlyErrors 
         };
-        Terminal.Work("Running nuitka...");
+        Terminal.Build("Running nuitka...");
         proc.Start();
         proc.WaitForExit();
         if (proc.ExitCode != 0)
@@ -329,7 +329,7 @@ public class Runner
         string finalName = Path.GetFileNameWithoutExtension(Config.MainExecutableName);
         if (Config.ClearBuild) 
         {
-            Terminal.Work("Removing build directory...");
+            Terminal.Build("Removing build directory...");
             Directory.Delete(finalName + ".build");
         }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");

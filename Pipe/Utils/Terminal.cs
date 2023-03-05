@@ -23,10 +23,10 @@ public static class Terminal
         Environment.Exit(exitCode);
     }
 
-    public static void Work(string msg)
+    public static void Build(string msg)
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.Write("[ WORK ]");
+        Console.Write("[ BUILD ]");
         Console.ResetColor();
         Console.WriteLine($": {msg}");  
     }

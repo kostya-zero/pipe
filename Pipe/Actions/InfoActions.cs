@@ -66,7 +66,6 @@ public class InfoActions
         Console.WriteLine("Pipe:");
         Console.WriteLine($"     Version:           {VersionInfo.Version}");
         Console.WriteLine( "     .NET Version:      7.0.101");
-        Console.WriteLine($"     Release Candidate: {VersionInfo.ReleaseCandidate}\n");
         Console.WriteLine("System:");
         Console.WriteLine($"     Version:     {Environment.OSVersion.Version}");
         Console.WriteLine($"     User Name:   {Environment.UserName}");

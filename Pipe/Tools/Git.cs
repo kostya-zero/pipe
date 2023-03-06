@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Pipe.Utils;
+namespace Pipe.Tools;
 
 public static class Git
 {

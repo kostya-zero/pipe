@@ -29,12 +29,17 @@ static class Program
                 ProjActions projActions = new ProjActions();
                 projActions.Resolve(args);
                 break;
-            case "info":
-                InfoActions infoActions = new InfoActions();
-                infoActions.Resolve(args);
+            case "version":
+                Messages.Version();
+                break;
+            case "require":
+                Messages.Require();
+                break;
+            case "env":
+                Messages.Env();
                 break;
             case "help":
-                HelpMessages.HelpProgram();
+                Messages.HelpProgram();
                 break;
             default:
                 Terminal.Error("Unknown command.");

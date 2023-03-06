@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using Pipe.Models;
+using Pipe.Tools;
 
 namespace Pipe.Utils;
 
@@ -122,7 +123,7 @@ public class Runner
             foreach (string s in Config.IgnorePkgs) {command.Append($" --nofollow-import-to={s}");}
         }
 
-        command.Append($" --product-version={Config.ProjectVersion.Trim()}");
+        command.Append($" --product-version={Config.ProjectVersion.Trim()} --file-version={Config.ProjectVersion.Trim()}");
 
         if (Config.OneFile) {command.Append(" --onefile");}
         if (Config.StandAlone) {command.Append(" --standalone");}

@@ -22,6 +22,10 @@ public class RecipeModel
     
     [JsonPropertyName("Nuitka_Jobs")] public int Jobs { get; set; } = 1;
     
+    [JsonPropertyName("Nuitka_UseLibpython")] public bool UseLibpython { get; set; }
+    
+    [JsonPropertyName("Nuitka_ClearCache")] public bool ClearCache { get; set; }
+    
     [JsonPropertyName("Pipe_RunBeforeBuild")] public List<string> RunBeforeBuild { get; set; } = new List<string>();
 
     [JsonPropertyName("Pipe_RequiredTools")] public List<string> RequiredTools { get; set; } = new List<string>();

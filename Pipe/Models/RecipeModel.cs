@@ -1,52 +1,18 @@
 using System.Text.Json.Serialization;
+using Pipe.Models.Recipe;
 
 namespace Pipe.Models;
 
 public class RecipeModel
 {
-    [JsonPropertyName("Project_Name")] public string ProjectName { get; set; } = "pipe_project";
-    
-    [JsonPropertyName("Project_MainExecutable")] public string MainExecutableName { get; set; } = "main.py";
-    
-    [JsonPropertyName("Project_Version")] public string ProjectVersion { get; set; } = "1.0.0";
 
-    [JsonPropertyName("Project_Description")] public string ProjectDescription { get; set; } = "An App built with Pipe!";
+    [JsonPropertyName("Project")] public ProjectModel Project { get; set; } = new ProjectModel();
 
-    [JsonPropertyName("Project_Type")] public string ProjectType { get; set; } = "app";
-    
-    [JsonPropertyName("Git_CheckoutBranch")] public string CheckoutBranch { get; set; } = "";
-    
-    [JsonPropertyName("Nuitka_BackendCompiler")] public string BackendCompiler { get; set; } = "gcc";
-    
-    [JsonPropertyName("Nuitka_LTO")] public int LTO { get; set; }
-    
-    [JsonPropertyName("Nuitka_Jobs")] public int Jobs { get; set; } = 1;
-    
-    [JsonPropertyName("Nuitka_UseLibpython")] public bool UseLibpython { get; set; }
-    
-    [JsonPropertyName("Nuitka_ClearCache")] public bool ClearCache { get; set; }
-    
-    [JsonPropertyName("Pipe_RunBeforeBuild")] public List<string> RunBeforeBuild { get; set; } = new List<string>();
+    [JsonPropertyName("Nuitka")] public NuitkaModel Nuitka { get; set; } = new NuitkaModel();
 
-    [JsonPropertyName("Pipe_RequiredTools")] public List<string> RequiredTools { get; set; } = new List<string>();
+    [JsonPropertyName("Pipe")] public PipeModel Pipe { get; set; } = new PipeModel();
+    
+    [JsonPropertyName("Options")] public OptionsModel Options { get; set; } = new OptionsModel();
 
-    [JsonPropertyName("Pipe_ClearBuild")] public bool ClearBuild { get; set; }
-    
-    [JsonPropertyName("Options_OneFile")] public bool OneFile { get; set; }
-    
-    [JsonPropertyName("Options_Standalone")] public bool StandAlone { get; set; }
-    
-    [JsonPropertyName("Options_FollowImports")] public bool FollowImports { get; set; } = true;
-    
-    [JsonPropertyName("Options_NoPyiFiles")] public bool IgnorePyiFiles { get; set; } = true;
-    
-    [JsonPropertyName("Options_ShowOnlyError")] public bool ShowOnlyErrors { get; set; }
-
-    [JsonPropertyName("Depends_Packages")] public List<string> Packages { get; set; } = new List<string>();
-    
-    [JsonPropertyName("Depends_UseRequirements")] public bool UseRequirements { get; set; } 
-    
-    [JsonPropertyName("Depends_IncludeDirs")] public List<string> IncludeDirectories { get; set; } = new List<string>();
-    
-    [JsonPropertyName("Depends_IgnorePackages")] public List<string> IgnorePkgs { get; set; } = new List<string>(new [] { "email", "http"});
+    [JsonPropertyName("Depends")] public DependsModel Depends { get; set; } = new DependsModel();
 }

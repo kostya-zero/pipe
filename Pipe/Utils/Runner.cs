@@ -25,7 +25,7 @@ public class Runner
     {
         Terminal.Build("Checking for packages...");
         int notFoundPackages = 0;
-        foreach (string package in Config.Packages)
+        foreach (string package in Config.Depends.Packages)
         {
             if (Pip.Check(package))
             {
@@ -50,7 +50,7 @@ public class Runner
     {
         Terminal.Build("Checking for directories...");
         int notFoundDirs = 0;
-        foreach (string directory in Config.IncludeDirectories)
+        foreach (string directory in Config.Depends.IncludeDirectories)
         {
             if (Directory.Exists(directory))
             {
@@ -73,7 +73,7 @@ public class Runner
     private void CheckTools()
     {
         int notFoundTools = 0;
-        foreach (string tool in Config.RequiredTools)
+        foreach (string tool in Config.Pipe.RequiredTools)
         {
             if (File.Exists(tool))
             {
@@ -95,9 +95,9 @@ public class Runner
 
     private void CheckConflicts()
     {
-        foreach (string package in Config.Packages)
+        foreach (string package in Config.Depends.Packages)
         {
-            if (Config.IgnorePkgs.Contains(package))
+            if (Config.Depends.IgnorePackages.Contains(package))
             {
                 Terminal.Error($"Pipe confused, because {package} package are used and ignored at the same time.");
                 FailBuild();
@@ -108,29 +108,29 @@ public class Runner
     private string GenerateCommand()
     {
         StringBuilder command = new StringBuilder("-m nuitka");
-        if (Config.Packages.Count != 0)
+        if (Config.Depends.Packages.Count != 0)
         {
-            foreach (string package in Config.Packages) {command.Append($" --include-package={package}");}
+            foreach (string package in Config.Depends.Packages) {command.Append($" --include-package={package}");}
         }
         
-        if (Config.IncludeDirectories.Count != 0)
+        if (Config.Depends.IncludeDirectories.Count != 0)
         {
-            foreach (string directory in Config.IncludeDirectories) {command.Append($" --include-plugin-directory={directory}");}
+            foreach (string directory in Config.Depends.IncludeDirectories) {command.Append($" --include-plugin-directory={directory}");}
         }
 
-        if (Config.IgnorePkgs.Count != 0)
+        if (Config.Depends.IgnorePackages.Count != 0)
         {
-            foreach (string s in Config.IgnorePkgs) {command.Append($" --nofollow-import-to={s}");}
+            foreach (string s in Config.Depends.IgnorePackages) {command.Append($" --nofollow-import-to={s}");}
         }
 
-        command.Append($" --product-version={Config.ProjectVersion.Trim()} --file-version={Config.ProjectVersion.Trim()}");
+        command.Append($" --product-version={Config.Project.Version.Trim()} --file-version={Config.Project.Version.Trim()}");
 
-        if (Config.OneFile) {command.Append(" --onefile");}
-        if (Config.StandAlone) {command.Append(" --standalone");}
-        if (Config.FollowImports) {command.Append(" --follow-imports");}
-        if (Config.IgnorePyiFiles) {command.Append(" --no-pyi-file");}
+        if (Config.Options.OneFile) {command.Append(" --onefile");}
+        if (Config.Options.StandAlone) {command.Append(" --standalone");}
+        if (Config.Options.FollowImports) {command.Append(" --follow-imports");}
+        if (Config.Options.IgnorePyiFiles) {command.Append(" --no-pyi-file");}
 
-        switch (Config.ProjectType.Trim())
+        switch (Config.Project.Type.Trim())
         {
             case "app":
                 break;
@@ -138,13 +138,13 @@ public class Runner
                 command.Append(" --module");
                 break;
             default:
-                Terminal.Error($"Unknown project type: {Config.ProjectType}.");
+                Terminal.Error($"Unknown project type: {Config.Project.Type}.");
                 FailBuild();
                 break;
     }
-        if (Config.Jobs != 0) {command.Append($" --jobs={Config.Jobs.ToString()}");}
+        if (Config.Nuitka.Jobs != 0) {command.Append($" --jobs={Config.Nuitka.Jobs.ToString()}");}
 
-        if (Config.Jobs == 0)
+        if (Config.Nuitka.Jobs == 0)
         {
             Terminal.Build("Detecting threads ('Nutika_Jobs': 0)...");
             int count = HostHelper.GetThreadsCount();
@@ -152,7 +152,7 @@ public class Runner
             command.Append($" --jobs={count.ToString()}");
         }
 
-        switch (Config.LTO)
+        switch (Config.Nuitka.LTO)
         {
             case 0:
                 break;
@@ -165,13 +165,13 @@ public class Runner
                 Terminal.Warn("LTO set to auto.");
                 break;
             default:
-                Terminal.Warn($"Option 'Nuitka_LTO' has value '{Config.LTO.ToString()}' that out of range. " +
+                Terminal.Warn($"Option 'Nuitka_LTO' has value '{Config.Nuitka.LTO.ToString()}' that out of range. " +
                               "Ignoring.");
                 break;
         }
 
         bool binaryNotFound = false;
-        switch (Config.BackendCompiler.Trim())
+        switch (Config.Nuitka.BackendCompiler.Trim())
         {
             case "gcc":
                 Terminal.Build("Searching for GCC binaries...");
@@ -194,7 +194,7 @@ public class Runner
                 FailBuild();
                 break;
             default:
-                Terminal.Error($"Unknown compiler: {Config.BackendCompiler}. Using defaults.");
+                Terminal.Error($"Unknown compiler: {Config.Nuitka.BackendCompiler}. Using defaults.");
                 break;
         }
         
@@ -204,7 +204,7 @@ public class Runner
             FailBuild();
         }
 
-        command.Append(" " + Config.MainExecutableName);
+        command.Append(" " + Config.Project.MainExecutable);
 
         return command.ToString();
     }
@@ -212,11 +212,11 @@ public class Runner
     public void RunBuild()
     {
         Terminal.Info($"Pipe Build System {VersionInfo.Version}");
-        Terminal.Info(Config.ProjectDescription.Trim() != ""
-            ? $"Building {Config.ProjectName} - {Config.ProjectDescription}"
-            : $"Building {Config.ProjectName}");
+        Terminal.Info(Config.Project.Description.Trim() != ""
+            ? $"Building {Config.Project.Name} - {Config.Project.Description}"
+            : $"Building {Config.Project.Name}");
 
-        Terminal.Info($"Configuration: {Config.ProjectType}");
+        Terminal.Info($"Configuration: {Config.Project.Type}");
         
         Terminal.Build("Searching for Python installation...");
         if (!File.Exists("/usr/bin/python") || !File.Exists("/usr/bin/python3"))
@@ -226,7 +226,7 @@ public class Runner
         }
         Terminal.Good("Python found.");
 
-        if (Config.UseRequirements)
+        if (Config.Depends.UseRequirements)
         {
             if (!File.Exists("requirements.txt"))
             {
@@ -242,28 +242,28 @@ public class Runner
         }
         else
         {
-            if (Config.Packages.Count != 0)
+            if (Config.Depends.Packages.Count != 0)
             {
                 CheckPackages();
                 CheckConflicts();
             } 
         }
         
-        if (Config.IncludeDirectories.Count != 0) {CheckDirectories();}
+        if (Config.Depends.IncludeDirectories.Count != 0) {CheckDirectories();}
         
-        if (!File.Exists(Config.MainExecutableName))
+        if (!File.Exists(Config.Project.MainExecutable))
         {
-            Terminal.Error($"Main file ({Config.MainExecutableName}) not found.");
+            Terminal.Error($"Main file ({Config.Project.MainExecutable}) not found.");
             FailBuild();
         }
 
-        if (Config.ProjectVersion.Trim() == "")
+        if (Config.Project.Version.Trim() == "")
         {
             Terminal.Error("Version of project not specified.");
             FailBuild();
         }
 
-        if (Config.RequiredTools.Count != 0)
+        if (Config.Pipe.RequiredTools.Count != 0)
         {
             Terminal.Info("Checking for required tools...");
             CheckTools();
@@ -274,27 +274,27 @@ public class Runner
             string currentBranch = Git.GetBranchName();
             Terminal.Info("Current git branch: " + currentBranch);
 
-            if (Config.CheckoutBranch != currentBranch && Config.CheckoutBranch.Trim() != "")
+            if (Config.Pipe.CheckoutBranch != currentBranch && Config.Pipe.CheckoutBranch.Trim() != "")
             {
-                Terminal.Build($"Checkout '{Config.CheckoutBranch}' branch...");
-                Git.Checkout(Config.CheckoutBranch);
+                Terminal.Build($"Checkout '{Config.Pipe.CheckoutBranch}' branch...");
+                Git.Checkout(Config.Pipe.CheckoutBranch);
             }
         }
         
         Terminal.Done("All checks complete.");
-        if (Config.RunBeforeBuild.Count != 0)
+        if (Config.Pipe.RunBeforeBuild.Count != 0)
         {
             
             Terminal.Build("Running commands before build...");
-            foreach (string s in Config.RunBeforeBuild)
+            foreach (string s in Config.Pipe.RunBeforeBuild)
             {
                 Process commandProc = new Process();
                 ProcessStartInfo commandProcInfo = new ProcessStartInfo
                 {
                     FileName = "bash",
                     Arguments = s,
-                    RedirectStandardInput = Config.ShowOnlyErrors,
-                    RedirectStandardOutput = Config.ShowOnlyErrors
+                    RedirectStandardInput = Config.Options.ShowOnlyErrors,
+                    RedirectStandardOutput = Config.Options.ShowOnlyErrors
                 };
                 commandProc.StartInfo = commandProcInfo;
                 Terminal.Build(s);
@@ -316,8 +316,8 @@ public class Runner
             FileName = "python",
             Arguments = command,
             CreateNoWindow = false,
-            RedirectStandardInput = Config.ShowOnlyErrors,
-            RedirectStandardOutput = Config.ShowOnlyErrors 
+            RedirectStandardInput = Config.Options.ShowOnlyErrors,
+            RedirectStandardOutput = Config.Options.ShowOnlyErrors 
         };
         Terminal.Build("Running nuitka...");
         proc.Start();
@@ -327,12 +327,12 @@ public class Runner
             Terminal.Error($"Nuitka exited with bad code ({proc.ExitCode.ToString()}).");
             FailBuild();
         }
-        string finalName = Path.GetFileNameWithoutExtension(Config.MainExecutableName);
-        if (Config.ClearBuild) 
-        {
-            Terminal.Build("Removing build directory...");
-            Directory.Delete(finalName + ".build");
-        }
+        string finalName = Path.GetFileNameWithoutExtension(Config.Project.MainExecutable);
+        // if (Config.Pipe.ClearBuild) 
+        // {
+        //     Terminal.Build("Removing build directory...");
+        //     Directory.Delete(finalName + ".build");
+        // }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");
         Terminal.Done($"Build finished. Executable will be saved as '{finalName + ".bin"}'.");
     }

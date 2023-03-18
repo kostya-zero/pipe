@@ -85,8 +85,11 @@ public class ProjActions
         string mainExec = Terminal.Ask("Enter name of main executable file.", "main.py");
         RecipeModel config = new RecipeModel
         {
-            ProjectName = name,
-            MainExecutableName = mainExec
+            Project =
+            {
+                Name = name,
+                MainExecutable = mainExec
+            }
         };
         RecipeManager.MakeRecipe(config);
         if (Git.IsInstalled() && !Git.IsGitRepository())
@@ -110,7 +113,7 @@ public class ProjActions
 
         var config = RecipeManager.GetRecipe();
 
-        if (config.Packages.Count == 0)
+        if (config.Depends.Packages.Count == 0)
         {
             Console.WriteLine("There no dependencies to restore.");
             Terminal.Exit(0);
@@ -118,7 +121,7 @@ public class ProjActions
 
         Pip pip = new Pip();
 
-        foreach (string package in config.Packages)
+        foreach (string package in config.Depends.Packages)
         {
             if (pip.Check(package))
             {
@@ -168,7 +171,7 @@ public class ProjActions
             }
         }
         
-        config.Packages.Add(pkg);
+        config.Depends.Packages.Add(pkg);
         RecipeManager.UpdateRecipe(config);
         Console.WriteLine("Package has been added.");
     }
@@ -177,14 +180,14 @@ public class ProjActions
     {
         Pip pip = new Pip();
         var config = RecipeManager.GetRecipe();
-        if (!config.Packages.Contains(pkg))
+        if (!config.Depends.Packages.Contains(pkg))
         {
             Console.WriteLine("Package not in this project!");
             Terminal.Exit(0);
         }
         if (pip.Check(pkg))
         {
-            config.Packages.Remove(pkg);
+            config.Depends.Packages.Remove(pkg);
             RecipeManager.UpdateRecipe(config);
             Console.WriteLine("Package removed.");
         }
@@ -203,10 +206,10 @@ public class ProjActions
         switch (projectType)
         {
             case "a" or "app":
-                recipe.ProjectType = "app";
+                recipe.Project.Type = "app";
                 break;
             case "m" or "module":
-                recipe.ProjectType = "module";
+                recipe.Project.Type = "module";
                 break;
             default:
                 Terminal.Error("Unknown project type.");
@@ -227,7 +230,7 @@ public class ProjActions
 
         var config = RecipeManager.GetRecipe();
 
-        if (config.UseRequirements)
+        if (config.Depends.UseRequirements)
         {
             if (!File.Exists("requirements.txt"))
             {
@@ -240,13 +243,13 @@ public class ProjActions
             Console.WriteLine(content);
         }
         
-        if (config.Packages.Count == 0)
+        if (config.Depends.Packages.Count == 0)
         {
             Console.WriteLine("No packages added to this project.");
             Terminal.Exit(0);
         }
 
-        foreach (string package in config.Packages)
+        foreach (string package in config.Depends.Packages)
         {
             Console.WriteLine(package);
         }
@@ -265,7 +268,7 @@ public class ProjActions
         ProcessStartInfo procInfo = new ProcessStartInfo
         {
             FileName = "python",
-            Arguments = config.MainExecutableName
+            Arguments = config.Project.MainExecutable
         };
         proc.StartInfo = procInfo;
         proc.Start();

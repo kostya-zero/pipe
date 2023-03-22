@@ -91,14 +91,6 @@ public class ProjActions
                 MainExecutable = mainExec
             }
         };
-        RecipeManager.MakeRecipe(config);
-        if (Git.IsInstalled() && !Git.IsGitRepository())
-        {
-            if (Git.Init())
-            {
-                Terminal.Info("Git repository has been initialized.");
-            }
-        }
         Console.WriteLine("Configuration file for your project has been generated!");
         Console.WriteLine("It will be placed with name recipe.pipe.");
     }

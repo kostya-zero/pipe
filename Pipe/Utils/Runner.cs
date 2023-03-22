@@ -70,29 +70,6 @@ public class Runner
         }
     }
 
-    private void CheckTools()
-    {
-        int notFoundTools = 0;
-        foreach (string tool in Config.Pipe.RequiredTools)
-        {
-            if (File.Exists(tool))
-            {
-                Terminal.Good($"{tool} found.");
-            }
-            else
-            {
-                Terminal.Error($"{tool} not found!");
-                notFoundTools++;
-            }
-        }
-
-        if (notFoundTools > 0)
-        {
-            Terminal.Error($"{notFoundTools.ToString()} tools not found.");
-            FailBuild();
-        }
-    }
-
     private void CheckConflicts()
     {
         foreach (string package in Config.Depends.Packages)
@@ -260,51 +237,8 @@ public class Runner
             Terminal.Error("Version of project not specified.");
             FailBuild();
         }
-
-        if (Config.Pipe.RequiredTools.Count != 0)
-        {
-            Terminal.Info("Checking for required tools...");
-            CheckTools();
-        }
-
-        if (Git.IsInstalled() && Git.IsGitRepository())
-        {
-            string currentBranch = Git.GetBranchName();
-            Terminal.Info("Current git branch: " + currentBranch);
-
-            if (Config.Pipe.CheckoutBranch != currentBranch && Config.Pipe.CheckoutBranch.Trim() != "")
-            {
-                Terminal.Build($"Checkout '{Config.Pipe.CheckoutBranch}' branch...");
-                Git.Checkout(Config.Pipe.CheckoutBranch);
-            }
-        }
         
         Terminal.Done("All checks complete.");
-        if (Config.Pipe.RunBeforeBuild.Count != 0)
-        {
-            
-            Terminal.Build("Running commands before build...");
-            foreach (string s in Config.Pipe.RunBeforeBuild)
-            {
-                Process commandProc = new Process();
-                ProcessStartInfo commandProcInfo = new ProcessStartInfo
-                {
-                    FileName = "bash",
-                    Arguments = s,
-                    RedirectStandardInput = Config.Options.ShowOnlyErrors,
-                    RedirectStandardOutput = Config.Options.ShowOnlyErrors
-                };
-                commandProc.StartInfo = commandProcInfo;
-                Terminal.Build(s);
-                commandProc.Start();
-                commandProc.WaitForExit();
-                if (commandProc.ExitCode != 0)
-                {
-                    Terminal.Error($"Command '{s}' exited with bad code ({commandProc.ExitCode.ToString()}).");
-                    FailBuild();
-                }
-            }
-        }
         Terminal.Build("Making build arguments tree...");
         string command = GenerateCommand();
         Terminal.Build("Preparing to run...");

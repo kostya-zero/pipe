@@ -129,19 +129,6 @@ public class Runner
         if (Config.Options.StandAlone) {command.Append(" --standalone");}
         if (Config.Options.FollowImports) {command.Append(" --follow-imports");}
         if (Config.Options.IgnorePyiFiles) {command.Append(" --no-pyi-file");}
-
-        switch (Config.Project.Type.Trim())
-        {
-            case "app":
-                break;
-            case "module":
-                command.Append(" --module");
-                break;
-            default:
-                Terminal.Error($"Unknown project type: {Config.Project.Type}.");
-                FailBuild();
-                break;
-    }
         if (Config.Nuitka.Jobs != 0) {command.Append($" --jobs={Config.Nuitka.Jobs.ToString()}");}
 
         if (Config.Nuitka.Jobs == 0)
@@ -203,8 +190,19 @@ public class Runner
             Terminal.Error("Cannot continue because some compilers binaries not found.");
             FailBuild();
         }
-
-        command.Append(" " + Config.Project.MainExecutable);
+        
+        switch(Config.Project.Type) {
+            case "app":
+                command.Append(" " + Config.Project.MainExecutable);
+                break;
+            case "module":
+                command.Append(" --module " + Config.Project.MainExecutable);
+                break;
+            default:
+                Terminal.Error("Incorrect project type!");
+                FailBuild();
+                break;
+        }
 
         return command.ToString();
     }

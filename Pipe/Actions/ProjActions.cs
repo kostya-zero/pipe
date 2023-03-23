@@ -27,26 +27,6 @@ public class ProjActions
             case "depends":
                 Depends();
                 break;
-            case "addpkg":
-                if (args.Length == 2)
-                {
-                    Console.WriteLine("Nothing to add to project! Enter a package name after 'addpkg'.");
-                    Console.WriteLine("Example: pipe proj addpkg numpy");
-                    Terminal.Exit(0);
-                }
-                
-                AddPkg(args[2]); 
-                break;
-            case "rmpkg":
-                if (args.Length == 2)
-                {
-                    Console.WriteLine("Nothing to remove from project! Enter a package name after 'rmpkg'.");
-                    Console.WriteLine("Example: pipe proj rmpkg numpy");
-                    Terminal.Exit(1);
-                }
-                
-                RmPkg(args[2]);  
-                break;
             case "update":
                 if (args.Length == 2)
                 {
@@ -54,15 +34,6 @@ public class ProjActions
                     Console.WriteLine("Example: pipe proj rmpkg numpy");
                     Terminal.Exit(1);
                 } 
-                break;
-            case "type":
-                if (args.Length == 2)
-                {
-                    Terminal.Info("Set type of you project: app or module.");
-                    Terminal.Exit(1);
-                }
-                
-                Type(args[2]);
                 break;
             case "run":
                 Run();
@@ -131,85 +102,6 @@ public class ProjActions
                 }
             }
         }
-    }
-
-    private void AddPkg(string pkg)
-    {
-        Pip pip = new Pip();
-        var config = RecipeManager.GetRecipe();
-        if (!pip.Check(pkg))
-        {
-            Console.Write($"Package {pkg} not installed! Do you want to proceed? (Y/n) :");
-            var answer = Console.ReadLine()?.Trim();
-            switch (answer)
-            {
-                case "" or "y" or "yes":
-                    if (!pip.Install(pkg))
-                    {
-                        Terminal.Error("Got error while trying to install package.");
-                        Terminal.Exit(1);
-                    }
-                    break;
-                case "n" or "no":
-                    Console.WriteLine("OK, adding without installation.");
-                    break;
-                default:
-                    if (!pip.Install(pkg))
-                    {
-                        Terminal.Error("Got error while trying to install package.");
-                        Terminal.Exit(1);
-                    }
-                    break;
-            }
-        }
-        
-        config.Depends.Packages.Add(pkg);
-        RecipeManager.UpdateRecipe(config);
-        Console.WriteLine("Package has been added.");
-    }
-
-    private void RmPkg(string pkg)
-    {
-        Pip pip = new Pip();
-        var config = RecipeManager.GetRecipe();
-        if (!config.Depends.Packages.Contains(pkg))
-        {
-            Console.WriteLine("Package not in this project!");
-            Terminal.Exit(0);
-        }
-        if (pip.Check(pkg))
-        {
-            config.Depends.Packages.Remove(pkg);
-            RecipeManager.UpdateRecipe(config);
-            Console.WriteLine("Package removed.");
-        }
-    }
-
-    private void Type(string projectType)
-    {
-        if (!RecipeManager.CheckForRecipe())
-        {
-            Terminal.Error("Recipe not found!");
-            Terminal.Exit(1);
-        }
-
-        var recipe = RecipeManager.GetRecipe();
-        projectType = projectType.ToLower();
-        switch (projectType)
-        {
-            case "a" or "app":
-                recipe.Project.Type = "app";
-                break;
-            case "m" or "module":
-                recipe.Project.Type = "module";
-                break;
-            default:
-                Terminal.Error("Unknown project type.");
-                Terminal.Exit(1);
-                break;
-        }
-        RecipeManager.UpdateRecipe(recipe);
-        Terminal.Done("New project type applied.");
     }
 
     private void Depends()

@@ -29,10 +29,7 @@ public static class Messages
         Console.WriteLine($"   {Decorator.Bold}init{Decorator.Reset}     Initialize a Pipe project.");
         Console.WriteLine($"   {Decorator.Bold}restore{Decorator.Reset}  Install dependencies for project.");
         Console.WriteLine($"   {Decorator.Bold}depends{Decorator.Reset}  List of dependencies.");
-        Console.WriteLine($"   {Decorator.Bold}type{Decorator.Reset}     Set type to your project. Can be 'app' or 'module'."); 
-        Console.WriteLine($"   {Decorator.Bold}addpkg{Decorator.Reset}   Add package to recipe.");
         Console.WriteLine($"   {Decorator.Bold}update{Decorator.Reset}   Update each package in project."); 
-        Console.WriteLine($"   {Decorator.Bold}rmpkg{Decorator.Reset}    Remove package from recipe.");
         Console.WriteLine($"   {Decorator.Bold}run{Decorator.Reset}      Run main executable of project."); 
     }
 
@@ -40,7 +37,6 @@ public static class Messages
     {
         Console.WriteLine("Pipe:");
         Console.WriteLine($"     Version:           {VersionInfo.Version}");
-        Console.WriteLine( "     .NET Version:      7.0.101");
         Console.WriteLine("System:");
         Console.WriteLine($"     Version:     {Environment.OSVersion.Version}");
         Console.WriteLine($"     User Name:   {Environment.UserName}");

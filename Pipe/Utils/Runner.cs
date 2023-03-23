@@ -190,7 +190,7 @@ public class Runner
         Terminal.Info(Config.Project.Description.Trim() != ""
             ? $"Building {Config.Project.Name} - {Config.Project.Description}"
             : $"Building {Config.Project.Name}");
-
+        Terminal.Info("Making version " + Config.Project.Version);
         Terminal.Info($"Configuration: {Config.Project.Type}");
         
         Terminal.Build("Searching for Python installation...");
@@ -260,11 +260,6 @@ public class Runner
             FailBuild();
         }
         string finalName = Path.GetFileNameWithoutExtension(Config.Project.MainExecutable);
-        // if (Config.Pipe.ClearBuild) 
-        // {
-        //     Terminal.Build("Removing build directory...");
-        //     Directory.Delete(finalName + ".build");
-        // }
         Terminal.Info($"Nuitka finished with exit code {proc.ExitCode.ToString()}.");
         Terminal.Done($"Build finished. Executable will be saved as '{finalName + ".bin"}'.");
     }

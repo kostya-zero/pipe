@@ -18,4 +18,7 @@ public class NuitkaModel
 
     [JsonPropertyName("ClearCache")]
     public bool ClearCache { get; set; }
+
+    [JsonPropertyName("ShowScons")]
+    public bool ShowScons { get; set; }
 }

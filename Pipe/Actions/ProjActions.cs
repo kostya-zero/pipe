@@ -62,6 +62,7 @@ public class ProjActions
                 MainExecutable = mainExec
             }
         };
+        RecipeManager.MakeRecipe(config);
         Console.WriteLine("Configuration file for your project has been generated!");
         Console.WriteLine("It will be placed with name recipe.pipe.");
     }

@@ -5,7 +5,6 @@ namespace Pipe.Models;
 
 public class RecipeModel
 {
-
     [JsonPropertyName("Project")] public ProjectModel Project { get; set; } = new ProjectModel();
 
     [JsonPropertyName("Nuitka")] public NuitkaModel Nuitka { get; set; } = new NuitkaModel();

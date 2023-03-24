@@ -134,6 +134,12 @@ public class Runner
                 break;
         }
 
+        if (Config.Nuitka.ShowScons) 
+        {
+            command.Append(" --show-scons");
+            Terminal.Info("Showing scons while compiling.");
+        }
+        
         bool binaryNotFound = false;
         switch (Config.Nuitka.BackendCompiler.Trim())
         {

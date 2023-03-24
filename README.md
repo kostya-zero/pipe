@@ -1,9 +1,16 @@
-<div align="center">
-    <img src="https://img.shields.io/badge/license-MIT-orange" alt="License">
-    <img src="https://img.shields.io/badge/works-on%20my%20machine-green">
-    <img src="https://img.shields.io/gitlab/v/release/kostya-zero/Pipe">
-    <img src="https://img.shields.io/github/actions/workflow/status/kostya-zero/pipe/dotnet.yml">
-    <img src="https://img.shields.io/codacy/grade/6bf12d0bf98345a7baba35c0804a44ef">
+<div class="badges" align="center">
+    <a href="https://gitlab.com/kostya-zero/pipe/-/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/License-MIT-E18075?style=for-the-badge&logo=bookstack&logoColor=white&colorA=202020&colorB=E18075">
+    </a>
+    <a href="https://gitlab.com/kostya-zero/pipe/-/releases">
+        <img src="https://img.shields.io/gitlab/v/release/kostya-zero/Pipe?style=for-the-badge&logo=gitlab&logoColor=white&colorA=202020&colorB=E8B66B">
+    </a>
+    <a href="https://github.com/kostya-zero/pipe/actions/workflows/dotnet.yml">
+        <img src="https://img.shields.io/github/actions/workflow/status/kostya-zero/pipe/dotnet.yml?style=for-the-badge&logo=github&logoColor=white&colorA=202020&colorB=F3F3F3">
+    </a>
+    <a href="https://app.codacy.com/gl/kostya-zero/pipe/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade">
+        <img src="https://img.shields.io/codacy/grade/6bf12d0bf98345a7baba35c0804a44ef?style=for-the-badge&logo=codacy&logoColor=white&colorA=202020&colorB=776BE8">
+    </a>
 </div>
 
 ---

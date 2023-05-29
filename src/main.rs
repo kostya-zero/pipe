@@ -1,3 +1,8 @@
+use crate::args::get_args;
+
+mod args;
+mod config;
+
 fn main() {
-    println!("Hello, world!");
+    let args = get_args().get_matches(); 
 }

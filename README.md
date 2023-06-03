@@ -14,7 +14,8 @@
 # Project rewrite
 
 I will rewrite this project in Rust, because I stopped using C#.
-Also, Pipe will become much faster with rewrite, so stay tuned.
+Now, Pipe will become a virtual environment manager.
+I think making a build system is a not perspective idea, because we have a lot of them.
 
 If you want to compile old version you can switch to `old` branch. 
 Have a nice day!

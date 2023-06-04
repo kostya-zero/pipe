@@ -7,15 +7,7 @@ pub fn get_args() -> Command {
         .arg_required_else_help(true)
         .subcommand_required(true)
         .subcommands([
-            Command::new("init")
-                .about("Initialize Pipe workspace."),
-            Command::new("add")
-                .about("Add package to environment.")
-                .arg(
-                    Arg::new("packages")
-                        .help("Packages to install.")
-                        .value_parser(value_parser!(String))
-                        .value_delimiter(' ')
-                )
+            Command::new("init").about("Initialize Pipe config."),
+            Command::new("build").about("Build application."),
         ])
 }

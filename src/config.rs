@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 pub struct Info {
     pub name: String,
     pub version: String,
-    pub main_file: String
+    pub main_file: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -33,9 +33,12 @@ impl Default for Project {
             info: Info {
                 name: String::from("PipeProject"),
                 version: String::from("0.1.0"),
-                main_file: String::from("main.py")
+                main_file: String::from("main.py"),
             },
-            options: Options { no_pyi_files: true, follow_imports: true },
+            options: Options {
+                no_pyi_files: true,
+                follow_imports: true,
+            },
             depends: Depends { modules: vec![] },
         }
     }
@@ -52,12 +55,16 @@ impl Manager {
     }
 
     pub fn make_default() {
-        let config: String = serde_yaml::to_string(&Project { ..Default::default() }).expect("Failed to convert config to string.");
+        let config: String = serde_yaml::to_string(&Project {
+            ..Default::default()
+        })
+        .expect("Failed to convert config to string.");
         fs::write("pipe.yml", config).unwrap();
     }
 
     pub fn write(config: Project) {
-        let content: String = serde_yaml::to_string(&config).expect("Failed to convert config to string");
+        let content: String =
+            serde_yaml::to_string(&config).expect("Failed to convert config to string");
         fs::write("pipe.yml", content).unwrap();
     }
 

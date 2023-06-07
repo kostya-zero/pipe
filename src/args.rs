@@ -9,5 +9,12 @@ pub fn get_args() -> Command {
         .subcommands([
             Command::new("init").about("Initialize Pipe config."),
             Command::new("build").about("Build application."),
+            Command::new("add")
+                .about("Add new module to project.")
+                .arg(Arg::new("package")
+                        .help("Package to add.")
+                        .value_parser(value_parser!(String))
+                    )
+
         ])
 }

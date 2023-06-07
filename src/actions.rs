@@ -1,3 +1,5 @@
+use std::process::exit;
+
 use crate::{
     config::{Manager, Project},
     term::Term,
@@ -20,5 +22,18 @@ impl Actions {
         base_config.info.version = version;
         Manager::write(base_config);
         Term::msg("Project file has been created! It is called \"pipe.yml\".");
+    }
+
+    pub fn add(package: &str) {
+        let mut config: Project = Manager::load();
+        if config.depends.modules.iter().any(|i| i == package) {
+            Term::msg("This package already added.");
+            exit(0);
+        }
+
+        config.depends.modules.push(package.to_string());
+        Manager::write(config);
+        Term::msg("Package has been added!");
+        exit(0);
     }
 }

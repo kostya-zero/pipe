@@ -14,7 +14,7 @@ pub fn get_args() -> Command {
                 .arg(Arg::new("package")
                         .help("Package to add.")
                         .value_parser(value_parser!(String))
-                    )
+                    ),
 
         ])
 }

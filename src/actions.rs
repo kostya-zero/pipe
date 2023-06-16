@@ -2,7 +2,7 @@ use std::process::exit;
 
 use crate::{
     config::{Manager, Project},
-    term::Term,
+    term::Term, utils::pip::Pip,
 };
 
 pub struct Actions;
@@ -26,9 +26,20 @@ impl Actions {
 
     pub fn add(package: &str) {
         let mut config: Project = Manager::load();
+        Term::msg(format!("Adding {} to the project...", package.to_string()).as_str());
         if config.depends.modules.iter().any(|i| i == package) {
             Term::msg("This package already added.");
             exit(0);
+        }
+
+        if Pip::is_package_installed(package) {
+            Term::warn("Package already installed via pip. No need to install")
+        } else {
+            Term::msg("Installing package via pip.");
+            if !Pip::install(package) {
+                Term::fatal("Failed to install package. Pip exited with bad exit code.");
+                exit(1);
+            }
         }
 
         config.depends.modules.push(package.to_string());

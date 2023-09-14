@@ -1,0 +1,10 @@
+[package]
+name = "pipe"
+description = "A build system for your Python project that uses Nuitka as a backend."
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = "4.3.0"
+serde = { version = "1.0.163", features = ["derive"] }
+serde_yaml = "0.9.21"

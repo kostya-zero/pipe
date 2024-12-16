@@ -2,7 +2,7 @@
 
 A lightweight and fast build system for Python.
 
-> ![NOTE]
+> [!NOTE]
 > If you would like to use old version of Pipe, go to [old branch](https://github.com/kostya-zero/pipe/tree/old).
 
 ## Features
